@@ -1,0 +1,36 @@
+# ===========================================
+# Claude Code ~/.claude — public repo
+# Ignore everything, whitelist only shareable content
+# ===========================================
+
+# Ignore everything by default
+*
+
+# --- Repo scaffolding ---
+!.gitignore
+!README.md
+!LICENSE
+!CONTRIBUTING.md
+!CODE_OF_CONDUCT.md
+!CLAUDE.md
+!SOUL.md
+
+# --- Hooks ---
+!hooks/
+!hooks/**
+
+# --- Rules ---
+!rules/
+!rules/**
+
+# --- GitHub community health files ---
+!.github/
+!.github/**
+
+# --- Skills (the actual value) ---
+!skills/
+!skills/**
+
+# --- Exclude loose files in skills root and machine-specific skills ---
+skills/*.*
+skills/ccs-delegation/
