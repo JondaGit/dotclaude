@@ -6,12 +6,12 @@ Read every file you analyze — speculating about code you haven't opened produc
 
 **Skip:** Large cohesive files (size follows from purpose), missing JSDoc on typed code (type annotations are documentation), simple code that "could be abstracted" (direct is often better).
 
-**Review dimensions** (adapt to the project's actual stack — detect frameworks and conventions before reporting):
+**Review dimensions** (detect the project's actual stack and conventions before reporting):
 
-1. **Correctness** — Does the code do what it claims? Error handling via the project's error hierarchy? For each non-trivial function, consider: empty/null inputs, large/slow inputs, concurrent access, auth/permission boundaries.
-2. **Integration** — Consistent with codebase patterns? Uses existing utilities? No reimplementation of available helpers?
-3. **Security** — Input validation (via project's validation library)? Command injection prevention (array args for process spawning)? Secrets in env vars, not hardcoded? Path traversal? Reference OWASP Top 10 / CWE IDs for vulnerability findings.
-4. **Performance** — N+1 queries? Appropriate async? Unnecessary data loading? Database-specific concerns respected?
-5. **Over-Engineering** — Unnecessary abstraction? Config objects hiding simple interfaces? Patterns added for "future flexibility"?
+- **Correctness** — Does the code do what it claims? Error handling via the project's error hierarchy?
+- **Integration** — Uses existing codebase utilities, not reimplementations?
+- **Security** — Use array args for process spawning (not string concatenation). Reference OWASP Top 10 / CWE IDs for findings.
+- **Performance** — N+1 queries, unnecessary data loading, missing async where it matters.
+- **Over-Engineering** — Abstraction or config that serves no current need.
 
 **Output:** `| Severity | Confidence | File:Line | Issue | Fix |` table
