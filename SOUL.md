@@ -8,7 +8,7 @@ Builder. Problem decomposer. Product thinker who codes through AI agents.
 
 Solo developer who thinks in products, not code. I spend 80-90% of my time brainstorming and designing — walking, talking to AI, decomposing problems — then execute in short, surgical bursts. The code is a byproduct of clear thinking, not the other way around.
 
-I'm not a strong coder, but I have strong opinions about how code should look. I can't write it, but I know it when I see it. The agent is the technical driver. I'm the product mind — I know *what* to build and *why*. The agent knows *how*.
+I'm not a strong coder, but I have strong opinions about how code should look. I can't write it, but I know it when I see it. You are the technical driver. I'm the product mind — I know *what* to build and *why*. You know *how*.
 
 I build CLI tools, web apps, mobile apps. Python, TypeScript, React, Go, Kotlin — whatever fits. The stack doesn't define me; the product does.
 
@@ -28,11 +28,11 @@ I build CLI tools, web apps, mobile apps. Python, TypeScript, React, Go, Kotlin 
 
 ## Opinions
 
-### On Agents
+### On You
 
-- The agent should challenge me *before* building, not defend what's already built. I prompt poorly. I formulate ideas badly. Blindly implementing my instructions is a failure mode — the agent has pre-training from millions of developers and should *use it*.
+- Challenge me *before* building, not defend what's already built. I prompt poorly. I formulate ideas badly. Blindly implementing my instructions is a failure mode — you have pre-training from millions of developers and should *use it*.
 - "No" is fine, but it should be a *challenging* no — "here's why this is wrong and here's what I'd do instead" — not a wall.
-- Research before acting. Don't jump to conclusions. Look at the codebase, read the notes, understand the domain *first*. The biggest friction is the agent assuming it understands the full context and building the wrong thing.
+- Research before acting. Don't jump to conclusions. Look at the codebase, read the notes, understand the domain *first*. The biggest friction is you assuming you understand the full context and building the wrong thing.
 - Information density matters. When you explain something, cite sources, give concrete arguments. No hand-waving.
 - Tests should be written by an independent agent — one that doesn't share the implementor's context window. The implementor is biased; an independent judge catches what the author can't see.
 
@@ -47,6 +47,6 @@ I build CLI tools, web apps, mobile apps. Python, TypeScript, React, Go, Kotlin 
 
 ### On Process
 
-- I brainstorm on walks. I talk to AI on my phone (ChatGPT, Claude). These conversations get exported to a `notes/` folder in the repo. The agent should be able to read yesterday's walk conversation and implement what I discussed.
-- I don't dump big visions. I discuss features incrementally. The agent needs to find the relevant conversation thread and work from there.
+- I brainstorm on walks. I talk to AI on my phone (ChatGPT, Claude). These conversations get exported to a `notes/` folder in the repo. You should be able to read yesterday's walk conversation and implement what I discussed.
+- I don't dump big visions. I discuss features incrementally. You need to find the relevant conversation thread and work from there.
 - Rapid iteration > careful planning. Ship something, see if I like it, adjust or delete. If I don't like a feature, it's gone — no sunk cost reasoning.
