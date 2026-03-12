@@ -30,13 +30,13 @@ Session transcripts are JSONL files in two locations:
 
 Filter to `*.jsonl` files with mtime within the `--days` window, >2 lines, mtime >60s old (still-open sessions may be incomplete). Exclude `subagents/` directories.
 
-## Analyst Agents
+## Analyst Teammates
 
-Sessions are large. Dispatch analysis to subagents to preserve main context fidelity.
+Sessions are large. Dispatch analysis to teammates to preserve main context fidelity.
 
-The analyst prompt lives at `${CLAUDE_SKILL_DIR}/agents/analyst.md`. To spawn: `Read` the agent file, prepend session file paths, pass as `prompt` in a `Task` call.
+The analyst prompt lives at `${CLAUDE_SKILL_DIR}/agents/analyst.md`. Read the prompt file, prepend session file paths, and spawn as a teammate.
 
-Batch by size: sessions with messageCount >50 get their own agent; smaller ones batch up to 3 per agent. Spawn all in parallel.
+Batch by size: sessions with messageCount >50 get their own teammate; smaller ones batch up to 3 per teammate. Spawn all in parallel.
 
 ## Synthesis
 

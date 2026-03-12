@@ -23,7 +23,7 @@ Two dimensions, run in parallel:
 - **Codebase** — existing implementations, patterns, conventions, similar features. Reference these so the executor follows established patterns.
 - **External** — how others solved this. Search for libraries, vendor docs, open source implementations. Learn from their experience before designing from scratch.
 
-Use `TeamCreate` with read-only exploration teammates for parallel search. For small, well-understood changes, read the files yourself.
+Spawn read-only exploration teammates for parallel search.
 
 ## Decomposition
 

@@ -1,6 +1,6 @@
 ---
 name: design
-description: Divergent design exploration that produces genuinely orthogonal solutions. Spawns independent agents with clean contexts and different reasoning methods to prevent convergence bias. Domain-agnostic — works for architecture, UI, product, strategy, or any design problem.
+description: Divergent design exploration that produces genuinely orthogonal solutions. Spawns independent teammates with clean contexts and different reasoning methods to prevent convergence bias. Domain-agnostic — works for architecture, UI, product, strategy, or any design problem.
 argument-hint: [design problem or goal]
 ---
 
@@ -14,9 +14,9 @@ You are capable of extraordinary creative work. The obvious, safe approaches get
 
 **Ideation and constraint satisfaction never share a step.** Creative exploration and practical filtering happen in separate phases — mixing them kills divergence.
 
-**Independent contexts create diversity.** Each explorer agent has a clean context with a different reasoning method. No agent sees another's work.
+**Independent contexts create diversity.** Each explorer teammate has a clean context with a different reasoning method. No teammate sees another's work.
 
-**Diversity through structure, not instruction.** Different reasoning methods, unique provocations, and independent contexts make convergence structurally impossible — telling agents "be different" doesn't work.
+**Diversity through structure, not instruction.** Different reasoning methods, unique provocations, and independent contexts make convergence structurally impossible — telling teammates "be different" doesn't work.
 
 ## Scaling
 
@@ -30,7 +30,7 @@ Default to standard. Scale up if the user signals high stakes or defamiliarizati
 
 ## Defamiliarize
 
-Before spawning explorers, break your default pattern-matching. Name the 2-3 obvious solutions first — you can't escape defaults you haven't named. Then reframe the problem through abstraction, inversion, distant analogy, and constraint removal. These reframings become seeds for explorer agents, not solutions themselves.
+Before spawning explorers, break your default pattern-matching. Name the 2-3 obvious solutions first — you can't escape defaults you haven't named. Then reframe the problem through abstraction, inversion, distant analogy, and constraint removal. These reframings become seeds for explorer teammates, not solutions themselves.
 
 ## Diverge
 
@@ -50,8 +50,8 @@ Before spawning explorers, break your default pattern-matching. Name the 2-3 obv
 
 Minimum set: Forward Build-Up, Constraint-First, plus one other relevant method.
 
-Spawn explorer agents in parallel, each with:
-- A clean context — only the problem statement, their assigned reasoning method from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, and relevant reframings. No agent sees another's work.
+Spawn explorer teammates in parallel, each with:
+- A clean context — only the problem statement, their assigned reasoning method from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, and relevant reframings. No teammate sees another's work.
 - A unique provocation that no other explorer receives — a random constraint, forced analogy, or "what if." These break the homogenization that makes LLM outputs converge even across independent contexts.
 - The anti-priming guard: "The orchestrator's reframings are starting points, not constraints. If the reframing feels wrong for your reasoning method, ignore it and start from the raw problem."
 
@@ -67,7 +67,7 @@ Ensure approaches are actually different. For each pair, identify the core mecha
 - **Domain Imprisonment** — all stay within the domain's conventions
 - **Novelty Chase** — different but purposelessly weird
 
-Spawn targeted fix agents with the shared assumption declared off-limits. Do not refine approaches yourself — the explorer's independent context created the diversity. Send feedback back and let them revise.
+Spawn targeted fix teammates with the shared assumption declared off-limits. Do not refine approaches yourself — the explorer's independent context created the diversity. Send feedback back and let them revise.
 
 ## Present
 

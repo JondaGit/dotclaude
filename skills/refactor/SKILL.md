@@ -1,39 +1,37 @@
 ---
 name: refactor
-description: Execute codebase refactoring with architectural analysis, quality dimensions, and parallel agent teams. Use when you have dedicated time for deep codebase improvement.
+description: Execute codebase refactoring with architectural analysis, quality dimensions, and parallel teammate teams. Use when you have dedicated time for deep codebase improvement.
 argument-hint: "[path] [--dimensions typing,security,...] [--phase N]"
 ---
 
 refactor_path = $ARGUMENTS
 
-You are the team lead for a codebase refactoring. You orchestrate specialists — you don't write production code. Your job: establish safety, sequence work, resolve conflicts between agents, and enforce quality gates.
+You are the team lead for a codebase refactoring. You orchestrate specialists — you don't write production code. Your job: establish safety, sequence work, resolve conflicts between teammates, and enforce quality gates.
 
 ## Scope
 
 - No path → refactor entire codebase
 - Path provided → analyze full codebase context, only refactor files within that path
-- `--dimensions` → run only named agents (e.g., `--dimensions typing,dead-code`)
+- `--dimensions` → run only named specialists (e.g., `--dimensions typing,dead-code`)
 - `--phase` → resume from that phase (assumes prior phases completed and committed)
 
 **Branch guard:** If on main/master with no worktree active, STOP — create a worktree or feature branch first. Refactors must be reversible.
 
-## Scaling Judgment
+## Scaling
 
-Match effort to scope. Not every refactor needs the full pipeline:
+All work flows through teammates. Match pipeline depth to scope:
 
-- **Targeted** (1-2 agents, small module): Baseline yourself, spawn agents directly. No team ceremony.
-- **Module-scoped** (one module, multiple agents): Baseline, Phase 1 if structural issues, Phase 2 in parallel. Skip Phase 3 unless cross-cutting issues surfaced.
-- **Full codebase**: All phases. Create a team with `TeamCreate`.
+- **Targeted** (small module, few dimensions): Baseline, spawn 1-2 specialist teammates. Lighter briefing, same team structure.
+- **Module-scoped** (one module, multiple dimensions): Baseline, Phase 1 if structural issues, Phase 2 in parallel. Skip Phase 3 unless cross-cutting issues surfaced.
+- **Full codebase**: All phases, full specialist roster.
 
-Use a team when spawning 3+ agents. Otherwise, plain `Agent` calls suffice.
+## Specialist Teammates
 
-## Specialist Agents
-
-Each file under `agents/` is a self-contained specialist with two modes:
+Each file under `agents/` is a self-contained specialist prompt with two modes:
 - **Analyzer**: Read-only. Produces a findings report. Never edits.
 - **Implementer**: Receives an analyzer report. Executes fixes. Never freelances.
 
-To spawn: `Read` the agent file from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, pass its full content as the `prompt` in a `Task` call with `team_name`. Prepend mode and scope:
+To spawn: read the prompt file from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, pass its full content as the teammate's prompt. Prepend mode and scope:
 
 ```
 You are in ANALYZER mode. Scope: <path or "entire codebase">.
@@ -59,7 +57,7 @@ For implementer mode, also append the analyzer's findings report.
 
 ### Project-Type Applicability
 
-Skip irrelevant agents rather than forcing them.
+Skip irrelevant specialists rather than forcing them.
 
 | Agent | CLI Tool | Library/SDK | Web App | API Service | Worker/Queue |
 |-------|---------|-------------|---------|-------------|-------------|
@@ -82,13 +80,13 @@ Phase order is strict — never start Phase N+1 before Phase N's checkpoint comm
 
 Establish that the codebase is in a known-good state before anyone touches it. Run tests, verify the build, confirm a clean working tree. Record baseline lint warnings — later gates measure delta, not absolute count.
 
-Classify the project (CLI / library / web app / API service / worker) and use the applicability matrix to skip irrelevant agents.
+Classify the project (CLI / library / web app / API service / worker) and use the applicability matrix to skip irrelevant specialists.
 
 If "unused" code may be dynamically selected (env vars, config, feature flags), flag it for the user before any agent deletes it.
 
 ### Phase 1: Structural Surgery
 
-These agents change *what files exist*. Every other agent needs a stable file structure. Running typing analysis on a file that dead-code will delete is wasted work.
+These teammates change *what files exist*. Every other specialist needs a stable file structure. Running typing analysis on a file that dead-code will delete is wasted work.
 
 Run `dead-code` then `structure` sequentially — structure needs dead code removed first.
 
@@ -98,22 +96,22 @@ After implementation: run verification gates. Commit: `refactor(phase-1): struct
 
 ### Phase 2: Code Quality
 
-With stable file structure, agents improve code within files.
+With stable file structure, teammates improve code within files.
 
 **Batch ordering matters:**
 - **A — typing first.** Types constrain everything else.
 - **B — error-handling + correctness.** Depend on types but not each other. Parallel.
 - **C — duplication + perf.** Independent. Parallel alongside or after B.
 
-Spawn all applicable analyzers in parallel. Wait for all reports. Check for write conflicts — if two agents want to edit the same file, assign it to one (prefer the more fundamental concern: typing > error-handling > correctness > duplication > perf). Then spawn implementers respecting batch order.
+Spawn all applicable analyzer teammates in parallel. Wait for all reports. Check for write conflicts — if two teammates want to edit the same file, assign it to one (prefer the more fundamental concern: typing > error-handling > correctness > duplication > perf). Then spawn implementer teammates respecting batch order.
 
 After implementation: run verification gates. Commit: `refactor(phase-2): code quality — [summary]`
 
 ### Phase 3: Cross-Cutting Concerns
 
-These agents need a global view across stable, quality-improved code. Skip if module-scoped and no cross-cutting issues surfaced.
+These specialists need a global view across stable, quality-improved code. Skip if module-scoped and no cross-cutting issues surfaced.
 
-Agents: `patterns`, `security`, `tests` — analyzers in parallel. Serialize implementer changes that touch shared files.
+Spawn `patterns`, `security`, `tests` analyzer teammates in parallel. Serialize implementer changes that touch shared files.
 
 Unify toward the *dominant existing pattern* (>60% prevalence). Never introduce new patterns during refactoring — the goal is convergence, not innovation.
 
@@ -122,7 +120,7 @@ After implementation: run verification gates. Commit: `refactor(phase-3): cross-
 ## Coordination Rules
 
 - **Analyze before implement.** Never spawn implementers until all analyzers in that phase finish. Review reports and resolve conflicts first.
-- **One writer per file.** Two agents must never edit the same file concurrently. On conflict, assign to the agent whose concern is more fundamental.
+- **One writer per file.** Two teammates must never edit the same file concurrently. On conflict, assign to the teammate whose concern is more fundamental.
 - **Hard role separation.** Analyzers never edit. Implementers follow the report. The lead never writes production code.
 - **Preserve comments.** Never strip comments or docstrings unless they reference deleted code.
 
@@ -139,4 +137,4 @@ On failure: up to 3 targeted fixes. If still failing, stop — summarize root ca
 
 ## Report
 
-When complete, summarize: phases run, agents used, issues fixed/deferred, and gate results.
+When complete, summarize: phases run, teammates used, issues fixed/deferred, and gate results.

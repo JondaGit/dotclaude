@@ -27,9 +27,9 @@ Maximize net LOC reduction while improving or maintaining readability.
 - **Auto-fix** — everything preserving user-facing capabilities. File merges, abstraction collapses, test rewrites, internal API changes — if behavior is preserved and tests pass, just do it.
 - **Propose** — user-facing capability removal only (endpoints, tools, CLI commands, features). You can't verify usage patterns, so these need sign-off.
 
-## File-Distiller Agent
+## File-Distiller Teammate
 
-The agent prompt lives at `${CLAUDE_SKILL_DIR}/agents/file-distiller.md`. To spawn a specialist: `Read` the agent file, then pass its full content as the `prompt` parameter in a `Task` call with `team_name`. Prepend the file assignment and any dead code scanner findings:
+The teammate prompt lives at `${CLAUDE_SKILL_DIR}/agents/file-distiller.md`. Read the prompt file and spawn a teammate with the full content as their prompt. Prepend the file assignment and any dead code scanner findings:
 
 ```
 You own `{file_path}` (and `{test_file_path}` if applicable).
@@ -41,7 +41,7 @@ Tier restriction: {tier range or "all tiers"}
 
 Spawn with `isolation: worktree` — prevents mid-flight collisions when teammates edit files that import from each other. Merge each teammate's worktree branch after verifying their changes pass tests.
 
-Why teammates instead of serial analysis: a single agent doing file-by-file analysis loses steam after easy wins. It skims Tiers 2-5 and declares "code is tight." Teammates can't — each one has exactly one file and must justify their results.
+Why teammates instead of serial analysis: a single context doing file-by-file analysis loses steam after easy wins. It skims Tiers 2-5 and declares "code is tight." Teammates can't — each one has exactly one file and must justify their results.
 
 ## Setup
 

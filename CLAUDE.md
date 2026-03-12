@@ -71,7 +71,7 @@ After 3-5 tool calls OR editing 3+ files: compact checkpoint (what changed, resu
 
 ### Delegation
 
-Use **teammates** (`TeamCreate` + `Task` with `team_name`) over plain `Agent` calls — teammates keep you responsive so the user can still interact. Exception: single fast lookups.
+Always use **teammates** (`TeamCreate` + `Task` with `team_name`) for delegation — teammates keep you responsive so the user can still interact. Protects the orchestrator's context window from growing with delegated work.
 
 ### Tools
 

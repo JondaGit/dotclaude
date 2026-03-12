@@ -48,7 +48,7 @@ Write down all hypotheses. Research will validate or invalidate them.
 
 ## Competitive Research
 
-Spawn **three research teammates in parallel**. For each: read the agent file from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, pass its full content as the prompt, prepend the skill summary and your hypotheses for context.
+Spawn **three research teammates in parallel**. For each: read the prompt file from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, pass its full content as the teammate's prompt, prepend the skill summary and your hypotheses for context.
 
 | Teammate | File | Purpose |
 |----------|------|---------|

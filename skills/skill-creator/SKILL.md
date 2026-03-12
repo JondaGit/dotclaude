@@ -110,7 +110,7 @@ Put results in `<skill-name>-workspace/` as a sibling to the skill directory. Or
 
 ### Spawn All Runs in One Turn
 
-For each test case, spawn **both** with-skill and baseline subagents simultaneously — not sequentially. This matters for wall-clock time.
+For each test case, spawn **both** with-skill and baseline teammates simultaneously — not sequentially. This matters for wall-clock time.
 
 **With-skill run:**
 ```
@@ -147,7 +147,7 @@ Update `eval_metadata.json` and `evals/evals.json` with assertions.
 
 ### Capture Timing Data as Runs Complete
 
-When a subagent task completes, the notification contains `total_tokens` and `duration_ms`. Save immediately to `timing.json` in the run directory — this data is not persisted elsewhere.
+When a teammate task completes, the notification contains `total_tokens` and `duration_ms`. Save immediately to `timing.json` in the run directory — this data is not persisted elsewhere.
 
 ```json
 {
@@ -161,7 +161,7 @@ When a subagent task completes, the notification contains `total_tokens` and `du
 
 Once all runs complete:
 
-1. **Grade each run** — spawn a grader using `agents/grader.md`. Save to `grading.json` per run. The expectations array must use fields `text`, `passed`, `evidence` — the viewer depends on these exact names. For programmatically checkable assertions, write and run a script rather than eyeballing it.
+1. **Grade each run** — spawn a grader teammate using `agents/grader.md`. Save to `grading.json` per run. The expectations array must use fields `text`, `passed`, `evidence` — the viewer depends on these exact names. For programmatically checkable assertions, write and run a script rather than eyeballing it.
 
 2. **Aggregate** — run from the skill-creator directory:
    ```bash
@@ -169,7 +169,7 @@ Once all runs complete:
    ```
    Produces `benchmark.json` and `benchmark.md`. Put each with_skill version before its baseline counterpart. See `references/schemas.md` for the exact schema.
 
-3. **Analyst pass** — read `agents/analyzer.md` and surface patterns the aggregate stats hide (non-discriminating assertions, high-variance evals, time/token tradeoffs).
+3. **Analyst pass** — spawn an analyst teammate using `agents/analyzer.md` to surface patterns the aggregate stats hide (non-discriminating assertions, high-variance evals, time/token tradeoffs).
 
 4. **Launch viewer** — always use `generate_review.py`, never custom HTML:
    ```bash
@@ -213,7 +213,7 @@ Stop when: the user is happy, feedback is all empty, or improvements plateau.
 
 ## Blind Comparison (Optional)
 
-For rigorous A/B comparison between skill versions. Read `agents/comparator.md` and `agents/analyzer.md`. Gives two outputs to an independent agent without revealing which is which.
+For rigorous A/B comparison between skill versions. Spawn comparator and analyzer teammates using `agents/comparator.md` and `agents/analyzer.md`. Gives two outputs to an independent teammate without revealing which is which.
 
 Most users won't need this — the human review loop is usually sufficient.
 
@@ -273,7 +273,7 @@ Take `best_description` from output JSON and update SKILL.md frontmatter. Show b
 
 ### Claude.ai
 
-No subagents — run test cases serially yourself. Skip baselines and quantitative benchmarking. Present results directly in conversation instead of the viewer. Skip description optimization (requires `claude -p` CLI).
+No teammates — run test cases serially yourself. Skip baselines and quantitative benchmarking. Present results directly in conversation instead of the viewer. Skip description optimization (requires `claude -p` CLI).
 
 ### Cowork
 
