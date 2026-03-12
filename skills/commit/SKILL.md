@@ -3,17 +3,13 @@ name: commit
 description: Commit and push changes following conventional commits. Use when ready to commit completed work.
 ---
 
-## What This Skill Does
-
-Commit completed work and push it to the remote. Follow conventional commits format.
-
 ## Branch Safety
 
-Committing to the wrong branch is the most common costly mistake. Before any commit:
+Committing to the wrong branch is the most common costly mistake — it bypasses review and makes rollback painful.
 
-- **Default branches (`main`/`master`) are off-limits.** Direct commits bypass code review and make rollback painful. Auto-create a `<type>/<short-slug>` feature branch from the changes (e.g., `fix/dialog-content-overflow`, `feat/oauth-flow`) and proceed.
-- **Wrong feature branch is equally dangerous.** After context switches, verify the branch name relates to what you're committing. Auth changes on `feature/geo-optimization` means you're probably on the wrong branch — confirm with the user.
-- **Submodules have independent branches.** Each submodule with changes needs its own branch check via `git -C <submodule> branch --show-current`. A submodule can be on `main` while the parent is on a feature branch.
+- **Default branches (`main`/`master`) are off-limits.** Auto-create a `<type>/<short-slug>` feature branch from the changes (e.g., `fix/dialog-overflow`, `feat/oauth-flow`).
+- **Verify after context switches.** Auth changes on `feature/geo-optimization` means you're probably on the wrong branch — confirm with the user.
+- **Submodules have independent branches.** Check each submodule with changes via `git -C <submodule> branch --show-current`. A submodule can be on `main` while the parent is on a feature branch.
 
 ## Commit Format
 
@@ -21,7 +17,7 @@ Committing to the wrong branch is the most common costly mistake. Before any com
 
 ### Message Quality
 
-The commit message is the only artifact that survives rebases, squashes, and file renames. Make it count:
+The commit message is the only artifact that survives rebases, squashes, and file renames.
 
 - Imperative mood ("add OAuth flow" not "added OAuth flow")
 - Capture *intent*, not *implementation* — the diff shows what changed, the message explains why

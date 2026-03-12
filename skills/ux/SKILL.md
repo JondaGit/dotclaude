@@ -6,34 +6,15 @@ argument-hint: [page path or URL]
 
 page_path = $ARGUMENTS
 
-Scope: If page_path provided, focus on that page/component. Otherwise, evaluate entire application UI.
+If page_path provided, focus on that page/component. Otherwise, evaluate entire application UI.
 
-## Scaling
+## Approach
 
-- **Single component**: Evaluate inline — read the code, apply the most relevant dimensions, present findings. Skip the full 13-dimension sweep.
-- **Full page or feature**: Apply all 13 dimensions from [ui-evaluation.md](ui-evaluation.md).
-- **Entire app**: Focus on the 3 highest-traffic flows first. A full audit of every page produces so many findings that none get fixed.
+Match evaluation depth to scope. A single component needs the 2-3 most relevant dimensions, not a 13-dimension sweep. A full page gets all 13. An entire app — focus on the 3 highest-traffic flows first; a full audit produces so many findings that none get fixed.
 
-## Gather Context
-
-Use whichever methods are available (in order of preference). Combine multiple for best results.
-
-1. **Live browser** (if any browser MCP tools are available) — Navigate, capture accessibility tree and screenshot, check console for JS errors
-2. **Screenshots** — User-provided or captured via available tools
-3. **Code review** — Read component/page source and evaluate from markup, styles, and logic
-
-At least one method is required.
-
-## Evaluate
+Gather context through whatever methods are available: live browser navigation (preferred), screenshots, or code review. At least one source is required. Combine multiple for best results.
 
 Apply dimensions from [ui-evaluation.md](ui-evaluation.md). Score each 1-5.
-
-**Core questions to keep in mind:**
-- What would frustrate users?
-- What would confuse first-time users?
-- Are interactions intuitive without explanation?
-- Is visual hierarchy clear?
-- Are error states handled?
 
 ## Output
 

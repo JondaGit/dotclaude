@@ -1,17 +1,12 @@
 ---
 name: improve-skill
 description: >
-  Critically assess an existing skill by comparing it against how other AI coding tools
-  and the open skill ecosystem approach the same problem. Uses a local system-prompts reference
-  repo and the /find-skills registry to identify gaps, unique strengths, and concrete improvements.
-  Use when the user says "improve skill X", "compare my skill", "what am I missing in skill X".
+  Critically assess an existing skill through competitive analysis and agent-execution quality review.
+  Uses a local system-prompts reference repo and the open skill ecosystem to identify gaps, strengths,
+  and concrete improvements. Use when the user says "improve skill X", "compare my skill", "what am I missing in skill X".
 allowed-tools: Read, Glob, Grep, Bash, Edit, Write, Task, WebFetch, WebSearch
 argument-hint: <skill-name>
 ---
-
-# Improve Skill — Competitive Skill Analyzer
-
-Assess a skill through competitive analysis and agent-execution quality review. The goal is often making the skill *shorter*, not longer — cutting bloat is as valuable as adding techniques.
 
 skill_name = $ARGUMENTS
 
@@ -21,22 +16,24 @@ If no argument, ask.
 
 Search in order: `~/.claude/skills/{skill_name}/SKILL.md` → `~/.claude/skills/{skill_name}/*.md` → `.rulesync/skills/{skill_name}/SKILL.md`. Read completely, including referenced files.
 
-## Self-Assessment (Before Research)
+## Philosophy
 
-Form hypotheses *before* external research — this prevents you from just parroting what competitors do. You'll be tempted to skip straight to research because it feels more productive. Don't. Your independent assessment is the baseline that makes research findings meaningful.
+The goal is often making a skill *shorter*, not longer — cutting bloat is as valuable as adding techniques. Subtraction requires independent judgment formed *before* seeing what competitors do. Research without a prior assessment just produces parroting.
 
-Assess two dimensions:
+## Self-Assessment
 
-### 1. Capability Gaps & Contradictions
+Form hypotheses before external research. Assess two dimensions:
+
+### Capability Gaps & Contradictions
 
 What the skill likely should do but doesn't. Where it contradicts its own philosophy.
 
-### 2. Agent-Execution Quality
+### Agent-Execution Quality
 
-Evaluate the skill as a *prompt for an executing agent*, not a document for a human reader. This is the higher-value analysis — most skills have acceptable coverage but poor prompt engineering.
+Evaluate the skill as a *prompt for an executing agent*, not a document for a human. This is the higher-value analysis — most skills have acceptable coverage but poor prompt engineering.
 
-| Check | Signal |
-|-------|--------|
+| Check | What to look for |
+|-------|-----------------|
 | **Why-motivation** | Unmotivated directives (MUST/NEVER/ALWAYS without reasoning) get dropped by agents under pressure. Count them. |
 | **Adaptive scaling** | Does workflow adjust to task complexity? A 2-file task shouldn't trigger the same pipeline as a 50-file task. |
 | **Progressive disclosure** | Skills over ~300 lines of core workflow suffer attention dilution. Are details in reference files loaded on demand? |
@@ -49,7 +46,7 @@ Evaluate the skill as a *prompt for an executing agent*, not a document for a hu
 
 Write down all hypotheses. Research will validate or invalidate them.
 
-## Competitive Research (Parallel)
+## Competitive Research
 
 Spawn **three research teammates in parallel**. For each: read the agent file from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, pass its full content as the prompt, prepend the skill summary and your hypotheses for context.
 
@@ -59,14 +56,9 @@ Spawn **three research teammates in parallel**. For each: read the agent file fr
 | Ecosystem Scanner | `agents/ecosystem.md` | Search open skills registry for similar skills |
 | Vendor Docs Researcher | `agents/vendor-docs.md` | Search vendor docs and best practices |
 
-## Synthesis
+## Synthesis & Report
 
-After all teammates complete, synthesize. Look for:
-- Which hypotheses research validated
-- Insights that only emerge from *combining* sources
-- What to cut — apply the **phantom constraint test**: if no competitor instructs it and the model would do it anyway, flag for removal
-
-### Report Format
+After all teammates complete, look for: which hypotheses research validated, insights that emerge from *combining* sources, and what to cut — apply the **phantom constraint test**: if no competitor instructs it and the model would do it anyway, flag for removal.
 
 Present as a single consolidated report:
 
@@ -96,8 +88,6 @@ Present as a single consolidated report:
 
 ## Implementation (After Approval)
 
-When rewriting, apply:
+Apply removals before additions — models default to additive changes; subtract first to prevent the skill from growing. Convert plain file paths to `!path/to/file.md` inline injection where appropriate. Report net line count change — a negative number is a good sign.
 
-!~/.claude/skills/prompt/SKILL.md
-
-**Apply removals before additions** — this prevents the skill from growing. Models default to additive changes; force yourself to subtract first. Convert plain file paths to `!path/to/file.md` inline injection where appropriate. Report net line count change — a negative number is a good sign.
+When rewriting, apply the `/prompt` skill's design principles.

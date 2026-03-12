@@ -66,10 +66,6 @@ Tests for trivial code, test files with 1-2 tests, test infrastructure more comp
 
 Readability trade-off: need ~3+ lines saved to justify any readability cost. Don't fight the formatter. Don't break encapsulation for LOC.
 
-## After Edits
-
-Run lint and relevant tests for your file. Fix any failures.
-
 ## Report
 
 Per-tier accounting is required. For each tier: what was applied (LOC delta), what was evaluated and kept (with reasons). An empty tier with no evidence of checking = you didn't check.

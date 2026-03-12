@@ -18,5 +18,3 @@ When the gap between what a module needs and what it has is large, the architect
 **Code-level patterns:** single-use abstractions, pass-through layers, speculative code, premature generalization.
 
 **When abstraction is justified:** removal would touch 5+ files, or comments/tests explicitly justify the pattern.
-
-**Output:** `| Severity | Confidence | File:Line | Pattern | Current | Fix |` table

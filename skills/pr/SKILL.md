@@ -9,19 +9,24 @@ Prepare and open a PR/MR for the current branch — from "work is done" to "PR i
 
 The reviewer arrives cold. They didn't write this code, and neither did another human — an agent did. The PR description is the only bridge between "what happened in the agent's context" and "what the human needs to decide." Every section exists to serve that handoff. If a section doesn't help the reviewer, cut it.
 
-## Principles
+## Multi-Repo Awareness
 
-**Assess before acting.** The right action depends on current state — existing PRs, branch status, multiple repos with changes, dirty worktrees. Look first.
-
-**Multi-repo awareness.** Work spanning multiple repositories (parent + submodule, multiple services) needs a separate PR per repo. Cross-reference paired PRs. Always `cd` into each repo root before running the create command — git tools infer the remote project from the current directory.
-
-**Confirm destructive or unusual actions.** Force-pushing, non-default base branches, pushing to a branch with an existing PR — pause and confirm.
-
-**Pass explicit title and body — but verify flags first.** `--fill` conflicts with explicit title/body in both `gh` and `glab`. Always use heredoc for the body. The flag names differ by tool: `gh` uses `--body`, `glab` uses `--description`. When in doubt, check `--help` before invoking — a failed MR create can leave orphaned remote state.
+Work spanning multiple repositories (parent + submodule, multiple services) needs a separate PR per repo. Cross-reference paired PRs. Always `cd` into each repo root before running the create command — git tools infer the remote project from the current directory.
 
 ## Conventional Commits Reference
 
 !`cat ~/.claude/skills/conventional-commits.md`
+
+## CLI Tool Reference
+
+`--fill` conflicts with explicit title/body in both `gh` and `glab`. Always use heredoc for the body.
+
+| | Title | Body | Create |
+|---|---|---|---|
+| `gh` | `--title` | `--body` | `gh pr create` |
+| `glab` | `--title` | `--description` | `glab mr create` |
+
+When in doubt, check `--help` before invoking — a failed MR create can leave orphaned remote state.
 
 ## PR Body
 

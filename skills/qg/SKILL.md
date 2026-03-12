@@ -4,11 +4,9 @@ description: Run all quality gates (format, lint, typecheck, tests, build) and r
 argument-hint: [path]
 ---
 
-target_path = $ARGUMENTS
+Run the project's quality gates — format, lint (auto-fix), typecheck, tests, build — scoped to $ARGUMENTS when provided. Detect configured gates from the project; skip what isn't there.
 
-Run the project's quality gates in order: format, lint (with auto-fix), typecheck, tests, build. Skip gates the project doesn't have configured. If target_path is provided, scope to that path.
-
-## Output
+## Report Format
 
 | Gate      | Status    | Issues               |
 | --------- | --------- | -------------------- |
@@ -18,4 +16,4 @@ Run the project's quality gates in order: format, lint (with auto-fix), typechec
 | Tests     | PASS/FAIL | N/M passed           |
 | Build     | PASS/FAIL | — or error           |
 
-On failure: top 3 issues with `file:line`. No full error dumps — the caller needs actionable locations, not noise.
+On failure: top 3 issues as `file:line`. The caller needs actionable locations, not full error dumps.

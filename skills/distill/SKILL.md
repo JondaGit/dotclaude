@@ -43,36 +43,22 @@ Spawn with `isolation: worktree` — prevents mid-flight collisions when teammat
 
 Why teammates instead of serial analysis: a single agent doing file-by-file analysis loses steam after easy wins. It skims Tiers 2-5 and declares "code is tight." Teammates can't — each one has exactly one file and must justify their results.
 
-## Setup (Lead Solo)
+## Setup
 
-1. **Verify green baseline.** Run tests. If they fail, stop — distillation requires a passing baseline.
-2. **Branch:** `git checkout -b distill/$(date +%s)`
-3. **Record baseline LOC** for the target module.
-4. **Run dead code scanner** (`{dead_code}`) if available. Distribute findings to relevant teammates.
+Branch: `git checkout -b distill/$(date +%s)`. Record baseline LOC for the target module. Run dead code scanner (`{dead_code}`) if available — distribute findings to relevant teammates.
 
-## Execution
+## Tier 6 — Structural Simplification (Lead Only)
 
-Spawn one file-distiller teammate per source file. Each handles Tiers 1-5 and Tier 7 on their assigned file.
+After all teammates finish, handle cross-file structural work they can't do in isolation:
 
-After all teammates finish, handle **Tier 6 — Structural Simplification** yourself. This is cross-file work that teammates can't do in isolation:
-
-- **File merges** — single-function files → merge into consumer. Thin `types.py`/`schemas.py`/`exceptions.py` → merge into adjacent modules. Any file under ~30 lines that isn't `__init__.py` — question whether it needs to exist.
-- **Abstraction collapse** — ABC/Protocol with one impl → delete ABC. Factory constructing one type → inline. Service class of static methods → module functions.
+- **File merges** — single-function files into consumer. Thin `types.py`/`schemas.py`/`exceptions.py` into adjacent modules. Any file under ~30 lines that isn't `__init__.py` — question whether it needs to exist.
+- **Abstraction collapse** — ABC/Protocol with one impl: delete ABC. Factory constructing one type: inline. Service class of static methods: module functions.
 - **Solution simplification** — complex library when stdlib suffices. Class with state when a function would do.
 - **Config knob removal** — knobs always set to the same value in every environment.
 
 **Do not hesitate on structural work.** Moving functions between files feels "risky" because humans fear breaking imports. You grep every reference and fix them all in one pass. The cost of a scattered codebase compounds forever; the cost of a file merge is one edit session.
 
-Fix all import references in one pass. Run full lint + test suite.
-
-## Verification
-
-Run after teammates finish and again after Tier 6. All must pass:
-1. Lint — 0 new warnings
-2. Tests — all pass
-3. Build — succeeds
-
-**On failure:** Up to 3 targeted fixes. If still failing, stop and ask user.
+Fix all import references in one pass. Run full lint + test suite after Tier 6.
 
 ## Report
 

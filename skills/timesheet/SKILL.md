@@ -3,34 +3,25 @@ name: timesheet
 description: Generate monthly work summary from git commits. Use for monthly reporting or time tracking.
 ---
 
-Generate monthly work summary from git commits.
+Generate a markdown table summarizing the current user's git commits for the current month.
 
-## Execution
+## Data Collection
 
-1. Determine current month's date range (1st to today)
+Gather commits from all repositories and submodules in the working directory. Scope to the current month (1st through today) and the current user's git identity (`git config user.name`).
 
-2. Fetch commits from all relevant repositories/submodules:
+## Output Format
 
-   Use: `git log --since="{year}-{month}-01" --until="{year}-{month}-{today+1}" --format="%ad | %an | %s" --date=short --no-merges`
+Markdown table, one row per day with commits:
 
-3. Determine the current user's git identity via `git config user.name`. Filter commits by that author only.
+| Day | Summary |
+|-----|---------|
+| **DD.MM.** | Short summary of work themes |
 
-4. Group commits by date
+## Summary Style
 
-5. For each day with commits, create a SHORT summary:
-   - Combine related commits into themes
-   - Separate sections by repository/submodule if applicable
-   - Target ~10-20 words per day (min 8 words — expand terse summaries with context)
-   - Skip lint/merge/trivial commits in summary
+Summaries should read like personal shorthand — what you'd jot in a work log, not what you'd write in a PR description.
 
-6. Output as markdown table:
-
-   | Day | Summary |
-   |-----|---------|
-   | **DD.MM.** | Short summary of work themes for the day |
-
-## Style
-
-- Be terse: "knowledgebase + RAG tools" not "Added knowledgebase feature and implemented RAG tools"
-- Group related: "form table extraction + compliance" not listing each commit
-- Skip obvious: don't mention "fix", "lint", "merge" unless significant
+- **Group by theme**, not by commit. "knowledgebase + RAG tools" over listing each commit separately.
+- **Target 10-20 words per day** (minimum 8 — expand terse single-commit days with enough context to be useful later).
+- **Skip noise**: lint fixes, merge commits, trivial reformats — unless they represent significant effort.
+- **Terse phrasing**: "form table extraction + compliance" not "Added form table extraction feature and implemented compliance checks."

@@ -1,31 +1,39 @@
 ---
 name: refactor
-description: Execute comprehensive codebase refactoring with architectural analysis, quality dimensions, and parallel agent teams per module. Use when you have dedicated time for deep codebase improvement.
+description: Execute codebase refactoring with architectural analysis, quality dimensions, and parallel agent teams. Use when you have dedicated time for deep codebase improvement.
 argument-hint: "[path] [--dimensions typing,security,...] [--phase N]"
 ---
 
 refactor_path = $ARGUMENTS
 
-You are the team lead for a codebase refactoring. You don't write production code — you orchestrate specialists who do. Your job: establish safety, sequence work correctly, resolve conflicts between agents, and enforce quality gates.
+You are the team lead for a codebase refactoring. You orchestrate specialists — you don't write production code. Your job: establish safety, sequence work, resolve conflicts between agents, and enforce quality gates.
 
 ## Scope
 
 - No path → refactor entire codebase
-- Path provided → analyze full codebase context but only refactor files within that path
-- `--dimensions` → run only named agents (e.g., `--dimensions typing,dead-code,security`)
+- Path provided → analyze full codebase context, only refactor files within that path
+- `--dimensions` → run only named agents (e.g., `--dimensions typing,dead-code`)
 - `--phase` → resume from that phase (assumes prior phases completed and committed)
 
-**Branch guard:** Check `git branch --show-current` before any edits. If on main/master with no worktree active, STOP — create a worktree or feature branch first. Refactors must be reversible.
+**Branch guard:** If on main/master with no worktree active, STOP — create a worktree or feature branch first. Refactors must be reversible.
 
-!refactoring-guidelines.md
+## Scaling Judgment
+
+Match effort to scope. Not every refactor needs the full pipeline:
+
+- **Targeted** (1-2 agents, small module): Baseline yourself, spawn agents directly. No team ceremony.
+- **Module-scoped** (one module, multiple agents): Baseline, Phase 1 if structural issues, Phase 2 in parallel. Skip Phase 3 unless cross-cutting issues surfaced.
+- **Full codebase**: All phases. Create a team with `TeamCreate`.
+
+Use a team when spawning 3+ agents. Otherwise, plain `Agent` calls suffice.
 
 ## Specialist Agents
 
-Each file under `agents/` is a self-contained specialist. They operate in two modes:
+Each file under `agents/` is a self-contained specialist with two modes:
 - **Analyzer**: Read-only. Produces a findings report. Never edits.
 - **Implementer**: Receives an analyzer report. Executes fixes. Never freelances.
 
-To spawn a specialist: `Read` the agent file from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, then pass its full content as the `prompt` parameter in a `Task` call with `team_name`. Prepend the mode and scope to the prompt content:
+To spawn: `Read` the agent file from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, pass its full content as the `prompt` in a `Task` call with `team_name`. Prepend mode and scope:
 
 ```
 You are in ANALYZER mode. Scope: <path or "entire codebase">.
@@ -33,6 +41,8 @@ You are in ANALYZER mode. Scope: <path or "entire codebase">.
 ```
 
 For implementer mode, also append the analyzer's findings report.
+
+### Ordering and Rationale
 
 | Agent | Phase | Why This Order |
 |-------|-------|---------------|
@@ -47,114 +57,86 @@ For implementer mode, also append the analyzer's findings report.
 | `security` | 3 — Cross-cutting | Needs stable code to audit boundaries. |
 | `tests` | 3 — Cross-cutting | Tests the final refactored code, not intermediate states. |
 
-## Scaling Judgment
+### Project-Type Applicability
 
-Not every refactor needs the full pipeline. Match effort to scope:
+Skip irrelevant agents rather than forcing them.
 
-- **Targeted** (1-2 agents, small module): Phase 0 yourself, spawn agents directly. No team ceremony.
-- **Module-scoped** (one module, multiple agents): Phase 0, Phase 1 if structural issues exist, Phase 2 agents in parallel. Skip Phase 3 unless cross-cutting issues surfaced.
-- **Full codebase**: All phases. Create a team with `TeamCreate`.
+| Agent | CLI Tool | Library/SDK | Web App | API Service | Worker/Queue |
+|-------|---------|-------------|---------|-------------|-------------|
+| typing | Yes | Yes | Yes | Yes | Yes |
+| dead-code | Yes | Yes | Yes | Yes | Yes |
+| error-handling | Yes | Yes | Yes | Yes | Yes |
+| correctness | Yes | Yes | Yes | Yes | Yes |
+| structure | Yes | Yes | Yes | Yes | Yes |
+| duplication | Yes | Yes | Yes | Yes | Yes |
+| patterns | Yes | Yes | Yes | Yes | Yes |
+| security | Rarely | Rarely | Yes | Yes | Depends |
+| tests | Yes | Yes | Yes | Yes | Yes |
+| perf | Rarely | Rarely | Yes | Yes | Yes |
 
-The decision: if you'd spawn 3+ agents, use a team. Otherwise, plain `Agent` calls suffice.
+## Phases
 
-## Phase 0: Safety Baseline (Lead Solo)
+Phase order is strict — never start Phase N+1 before Phase N's checkpoint commit. Each phase builds on the prior phase's guarantees.
 
-You do this yourself. No agents. The goal: establish that the codebase is in a known-good state before anyone touches it.
+### Phase 0: Safety Baseline (Lead Solo)
 
-**What to establish:**
-1. **Tests pass.** Run the test suite. If tests fail, stop — the user must fix existing failures or explicitly accept the risk. You cannot measure regression against a broken baseline.
-2. **Build succeeds.** Record the build command for later gates.
-3. **Clean working tree.** If uncommitted changes exist, ask the user to commit or stash. Current HEAD is the rollback point.
-4. **Project classification.** Classify as CLI tool / library / web app / API service / worker. Use the applicability matrix in `refactoring-guidelines.md` to skip irrelevant agents — don't force security analysis on a pure CLI tool or perf analysis on a library with no hot paths.
-5. **Baseline metrics.** Count current lint warnings. Later gates measure *delta*, not absolute count.
+Establish that the codebase is in a known-good state before anyone touches it. Run tests, verify the build, confirm a clean working tree. Record baseline lint warnings — later gates measure delta, not absolute count.
 
-If "unused" code may be dynamically selected (env vars, config files, feature flags): flag it for the user before any agent deletes it.
+Classify the project (CLI / library / web app / API service / worker) and use the applicability matrix to skip irrelevant agents.
 
-## Phase 1: Structural Surgery
+If "unused" code may be dynamically selected (env vars, config, feature flags), flag it for the user before any agent deletes it.
 
-**Why first:** These agents change *what files exist*. Every other agent needs a stable file structure to work against. Running typing analysis on a file that dead-code will delete is wasted work.
+### Phase 1: Structural Surgery
 
-**Agents:** `dead-code` then `structure` (sequential — structure needs dead code removed first).
+These agents change *what files exist*. Every other agent needs a stable file structure. Running typing analysis on a file that dead-code will delete is wasted work.
 
-**The critical judgment:** File deletions and structural changes are high-risk and hard to review after the fact. Always present the analyzer's proposed changes to the user for approval before spawning the implementer:
-- FILES_TO_DELETE, FILES_TO_MERGE, FILES_TO_SPLIT — each with justification
-- UNUSED_EXPORTS — exports with no importers
-- CYCLES_TO_BREAK — circular dependency chains
+Run `dead-code` then `structure` sequentially — structure needs dead code removed first.
 
-Only pass approved items to the implementer agent.
+**Critical:** File deletions and structural changes are high-risk. Present the analyzer's proposed deletions, merges, splits, and cycle-breaking to the user for approval before spawning the implementer. Only pass approved items.
 
-**After implementation:** Run verification gates. Commit: `refactor(phase-1): structural surgery — [summary]`
+After implementation: run verification gates. Commit: `refactor(phase-1): structural surgery — [summary]`
 
-## Phase 2: Code Quality
+### Phase 2: Code Quality
 
-**Why this phase exists:** With stable file structure, agents can now improve code *within* files without coordination headaches.
+With stable file structure, agents improve code within files.
 
-**Ordering within Phase 2:**
-- **Batch A — typing first.** Types constrain everything else. Error-handling agents need accurate type info to judge null paths. Correctness agents need types to verify contracts. Always complete typing before spawning Batch B.
-- **Batch B — error-handling + correctness.** These depend on types but not on each other. Spawn in parallel.
-- **Batch C — duplication + perf.** Independent of everything. Spawn in parallel alongside or after Batch B.
+**Batch ordering matters:**
+- **A — typing first.** Types constrain everything else.
+- **B — error-handling + correctness.** Depend on types but not each other. Parallel.
+- **C — duplication + perf.** Independent. Parallel alongside or after B.
 
-**Analyze-then-implement pattern:** Spawn all applicable Phase 2 analyzers in parallel. Wait for all reports. Check for write conflicts — if two agents want to edit the same file, assign it to one agent (prefer the agent whose concern is more fundamental: typing > error-handling > correctness > duplication > perf). Then spawn implementers with their reports, respecting batch order.
+Spawn all applicable analyzers in parallel. Wait for all reports. Check for write conflicts — if two agents want to edit the same file, assign it to one (prefer the more fundamental concern: typing > error-handling > correctness > duplication > perf). Then spawn implementers respecting batch order.
 
-Analyzers use only Glob, Grep, Read. They report findings via `SendMessage`. Implementers receive the analyzer report in their prompt and execute fixes.
+After implementation: run verification gates. Commit: `refactor(phase-2): code quality — [summary]`
 
-**After implementation:** Run verification gates. Commit: `refactor(phase-2): code quality sweep — [summary]`
+### Phase 3: Cross-Cutting Concerns
 
-## Phase 3: Cross-Cutting Concerns
+These agents need a global view across stable, quality-improved code. Skip if module-scoped and no cross-cutting issues surfaced.
 
-**Why last:** These agents need a global view across the now-stable, quality-improved codebase. Running pattern unification before dead code removal would unify patterns that are about to be deleted.
+Agents: `patterns`, `security`, `tests` — analyzers in parallel. Serialize implementer changes that touch shared files.
 
-**Agents:** `patterns`, `security`, `tests` — spawn analyzers in parallel.
+Unify toward the *dominant existing pattern* (>60% prevalence). Never introduce new patterns during refactoring — the goal is convergence, not innovation.
 
-**Skip if:** Refactor is module-scoped and no cross-cutting issues surfaced in Phase 2.
+After implementation: run verification gates. Commit: `refactor(phase-3): cross-cutting — [summary]`
 
-**Key constraint:** Cross-cutting changes must unify toward the *dominant existing pattern* (>60% prevalence). Never introduce new patterns during refactoring. The goal is convergence, not innovation.
+## Coordination Rules
 
-Serialize implementer changes that touch shared files — two agents must never edit the same file concurrently.
-
-**After implementation:** Run verification gates. Commit: `refactor(phase-3): cross-cutting concerns — [summary]`
+- **Analyze before implement.** Never spawn implementers until all analyzers in that phase finish. Review reports and resolve conflicts first.
+- **One writer per file.** Two agents must never edit the same file concurrently. On conflict, assign to the agent whose concern is more fundamental.
+- **Hard role separation.** Analyzers never edit. Implementers follow the report. The lead never writes production code.
+- **Preserve comments.** Never strip comments or docstrings unless they reference deleted code.
 
 ## Verification Gates
 
-Run after every phase and after each batch within a phase. Gate order (each must pass before the next):
+Run after every phase and after each batch. Each must pass before the next:
 
 1. **Typecheck** — 0 errors
-2. **Lint** — 0 new warnings vs Phase 0 baseline
+2. **Lint** — 0 new warnings vs baseline
 3. **Tests** — all pass
 4. **Build** — succeeds
 
-**On failure:** Up to 3 targeted fixes per failing gate. If still failing after 3 attempts, stop — summarize root cause, exact error, what was tried. Ask user. Do not disable lint rules or skip tests to force a pass.
-
-## Invariants
-
-These hold throughout the entire refactoring, not just at specific phases:
-
-- **Phase order is strict.** Never start Phase N+1 before Phase N's checkpoint commit. Phases build on each other's guarantees.
-- **Analyze before implement.** Never spawn implementers until all analyzers in that phase finish. The lead reviews reports and resolves conflicts first.
-- **Hard role separation.** Analyzers never edit. Implementers follow the report. The lead never writes production code.
-- **One writer per file.** Two agents must never edit the same file. When conflicts arise, assign the file to the agent whose concern is more fundamental.
-- **3-strike rule.** Same file fails verification 3 times → stop, ask user. Something structural is wrong.
-- **Preserve comments.** Never strip comments, docstrings, or metadata unless they reference deleted code. LLMs silently drop these in ~7% of transformations.
-- **No speculative improvement.** Fix clear quality issues. Working, well-structured code stays as-is.
+On failure: up to 3 targeted fixes. If still failing, stop — summarize root cause, exact error, what was tried. Ask user.
 
 ## Report
 
-When complete, summarize:
-
-```
-## Summary
-<what was accomplished>
-
-### Phases
-| Phase | Agents Used | Status | Files Changed |
-
-### Agent Status
-| Agent | Applies | Status | Issues Fixed | Deferred |
-
-### Quality Gates
-| Gate | Baseline | Final | Status |
-| Typecheck | N errors | N errors | PASS/FAIL |
-| Lint | N warnings | N warnings | PASS/FAIL |
-| Tests | N pass / N fail | N pass / N fail | PASS/FAIL |
-| Build | PASS/FAIL | PASS/FAIL | PASS/FAIL |
-```
+When complete, summarize: phases run, agents used, issues fixed/deferred, and gate results.
