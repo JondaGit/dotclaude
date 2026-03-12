@@ -1,7 +1,7 @@
 ---
 name: refactor
 description: Execute comprehensive codebase refactoring with architectural analysis, quality dimensions, and parallel agent teams per module. Use when you have dedicated time for deep codebase improvement.
-argument-hint: [path] [--dimensions typing,security,...] [--phase N]
+argument-hint: "[path] [--dimensions typing,security,...] [--phase N]"
 ---
 
 refactor_path = $ARGUMENTS

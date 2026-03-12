@@ -11,148 +11,93 @@ argument-hint: <skill-name>
 
 # Improve Skill — Competitive Skill Analyzer
 
-Takes an existing skill name, reads it, then performs multi-source competitive analysis
-and agent-execution quality assessment. Produces a gap analysis and actionable improvements.
+Assess a skill through competitive analysis and agent-execution quality review. The goal is often making the skill *shorter*, not longer — cutting bloat is as valuable as adding techniques.
 
-## Input
-
-```
 skill_name = $ARGUMENTS
-```
 
-If no argument is provided, ask the user which skill to analyze.
+If no argument, ask.
 
-## Phase 1: Read & Self-Assess the Target Skill
+## Finding the Skill
 
-1. Find the skill file. Search in order:
-   - `~/.claude/skills/{skill_name}/SKILL.md`
-   - `~/.claude/skills/{skill_name}/*.md`
-   - `.rulesync/skills/{skill_name}/SKILL.md`
-   - If not found, report error and stop.
+Search in order: `~/.claude/skills/{skill_name}/SKILL.md` → `~/.claude/skills/{skill_name}/*.md` → `.rulesync/skills/{skill_name}/SKILL.md`. Read completely, including referenced files.
 
-2. Read the skill file completely. Also read any referenced files.
+## Self-Assessment (Before Research)
 
-3. Extract the skill's core capabilities:
-   - **Purpose**: What problem does this skill solve?
-   - **Techniques**: What specific approaches does it use?
-   - **Workflow**: What are the execution steps?
-   - **Outputs**: What does it produce?
+Form hypotheses *before* external research — this prevents you from just parroting what competitors do. You'll be tempted to skip straight to research because it feels more productive. Don't. Your independent assessment is the baseline that makes research findings meaningful.
 
-4. **Form initial hypotheses** before any external research. Based on your knowledge, identify:
+Assess two dimensions:
 
-   **Gaps**: Capabilities the skill likely should have but doesn't mention.
+### 1. Capability Gaps & Contradictions
 
-   **Internal contradictions**: Where the skill's instructions violate its own stated philosophy.
+What the skill likely should do but doesn't. Where it contradicts its own philosophy.
 
-   **Agent-execution quality**: This is the most important assessment. Evaluate the skill as a prompt for an executing agent, not as a document for a human reader:
+### 2. Agent-Execution Quality
 
-   | Check | What to look for |
-   |-------|-----------------|
-   | **Why-motivation** | Does every constraint explain WHY? Count directives (MUST/NEVER/ALWAYS) that lack reasoning. Unmotivated constraints get dropped by agents under pressure. |
-   | **Adaptive scaling** | Does the skill adjust workflow to task complexity? Or is it one rigid pipeline regardless of input size? A 2-file task shouldn't trigger the same pipeline as a 50-file task. |
-   | **Progressive disclosure** | Is everything inline, or are details in reference files loaded on demand? Skills over ~300 lines of core workflow suffer attention dilution. |
-   | **Failure mode awareness** | Does the skill anticipate what the agent will get wrong and pre-empt it? "You'll be tempted to skip this because..." is more effective than "MUST complete this step." |
-   | **Escape hatches** | Can the agent skip phases that don't apply? Or must it always run the full pipeline? |
-   | **Constraint density** | Estimate constraints per 100 lines. Above ~5 unmotivated constraints = attention dilution risk. |
-   | **Tone** | Directive-heavy ("NEVER", "MUST") vs. explanatory ("because X, do Y"). Explanatory tone produces better agent behavior because the agent can reason about edge cases. |
-   | **File reference pattern** | Does the skill reference files with `!path/to/file.md` (inline injection, good) or plain paths (requires extra read, slower)? |
+Evaluate the skill as a *prompt for an executing agent*, not a document for a human reader. This is the higher-value analysis — most skills have acceptable coverage but poor prompt engineering.
 
-   **Bloat and dead weight**: Sections that are verbose, redundant, or state things the model would do anyway. Instructions that duplicate built-in behavior, laundry lists that could be a single heuristic, guardrails against things that wouldn't happen.
+| Check | Signal |
+|-------|--------|
+| **Why-motivation** | Unmotivated directives (MUST/NEVER/ALWAYS without reasoning) get dropped by agents under pressure. Count them. |
+| **Adaptive scaling** | Does workflow adjust to task complexity? A 2-file task shouldn't trigger the same pipeline as a 50-file task. |
+| **Progressive disclosure** | Skills over ~300 lines of core workflow suffer attention dilution. Are details in reference files loaded on demand? |
+| **Failure mode awareness** | "You'll be tempted to skip this because..." outperforms "MUST complete this step." Does the skill anticipate agent failure modes? |
+| **Escape hatches** | Can the agent skip phases that don't apply? |
+| **Constraint density** | Above ~5 unmotivated constraints per 100 lines = attention dilution risk. |
+| **Tone** | Explanatory ("because X, do Y") > directive ("NEVER do X"). Explanatory tone lets the agent reason about edge cases. |
+| **File references** | `!path/to/file.md` (inline injection) > plain paths (requires extra read). |
+| **Phantom constraints** | Instructions the model would follow anyway. If no competitor bothers instructing it, the model handles it without being told. |
 
-   Write these hypotheses down. Research in Phase 2 will validate or invalidate them.
+Write down all hypotheses. Research will validate or invalidate them.
 
-## Phase 2: Competitive Research (Parallel)
+## Competitive Research (Parallel)
 
-Spawn **three research agents in parallel** using the Task tool. For each agent: `Read` the agent file from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, then pass its full content as the `prompt` parameter in a `Task` call with `team_name`. Prepend the skill summary and Phase 1 hypotheses to each agent's prompt so they have full context.
+Spawn **three research teammates in parallel**. For each: read the agent file from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, pass its full content as the prompt, prepend the skill summary and your hypotheses for context.
 
-| Agent | File | Purpose |
-|-------|------|---------|
+| Teammate | File | Purpose |
+|----------|------|---------|
 | System Prompts Analyzer | `agents/system-prompts.md` | Compare against other AI coding tools' system prompts |
-| Ecosystem Scanner | `agents/ecosystem.md` | Search the open skills registry for similar skills |
+| Ecosystem Scanner | `agents/ecosystem.md` | Search open skills registry for similar skills |
 | Vendor Docs Researcher | `agents/vendor-docs.md` | Search vendor docs and best practices |
 
-## Phase 3: Consolidate & Synthesize
+## Synthesis
 
-After all three agents complete, synthesize across sources. This is the most important phase.
+After all teammates complete, synthesize. Look for:
+- Which hypotheses research validated
+- Insights that only emerge from *combining* sources
+- What to cut — apply the **phantom constraint test**: if no competitor instructs it and the model would do it anyway, flag for removal
 
-1. Check which Phase 1 hypotheses were validated by research.
-2. Look for insights that only emerge from *combining* multiple sources.
-3. Check for internal contradictions.
-4. **Identify what to cut.** If the skill has instructions no competitor bothers with and the model would follow anyway, flag for removal. The goal is often making the skill *shorter*, not longer.
+### Report Format
 
-### Gap Analysis Table
+Present as a single consolidated report:
 
-| Category | What We Have | What We're Missing | What Could Be Cut | Priority | Sources |
-|----------|-------------|-------------------|-------------------|----------|---------|
-| ... | ... | ... | ... | HIGH/MED/LOW | ... |
+**1. Executive summary** (2-3 sentences) — ahead, behind, or on par? Over-engineered, under-engineered, or right-sized?
 
-### Agent-Execution Quality Assessment
-
-Present the results of the agent-execution checks from Phase 1, now validated against research:
+**2. Agent-execution quality assessment:**
 
 | Check | Current State | Recommendation | Priority |
 |-------|--------------|----------------|----------|
-| Why-motivation | N unmotivated directives | Rewrite with reasoning | HIGH |
-| Adaptive scaling | Rigid pipeline | Add scaling section | HIGH |
-| ... | ... | ... | ... |
 
-### Unique Strengths
+**3. Gap analysis:**
 
-Things our skill does that others don't — preserve these.
+| Category | Have | Missing | Could Cut | Priority | Sources |
+|----------|------|---------|-----------|----------|---------|
 
-### Recommended Removals
+**4. Recommended removals** — concrete sections to delete, with rationale.
 
-Sections to delete or simplify. Apply the "phantom constraint" test: if no competitor instructs it and the model would do it anyway, cut it.
+**5. Recommended additions** — highest-impact first, with concrete text. Severity: CRITICAL (most competitors have it, significantly impacts quality) → HIGH → MEDIUM → LOW.
 
-### Recommended Additions
+**6. Net effect** — will the skill get longer, shorter, or stay the same? Aim for shorter-or-same.
 
-For each gap, provide concrete text to add. Order by priority.
+**7. Unique strengths** to preserve.
 
-Severity levels:
-- **CRITICAL**: Missing something most competitors have that significantly impacts quality
-- **HIGH**: Valuable technique from multiple competitors
-- **MEDIUM**: Nice-to-have from some tools
-- **LOW**: Edge-case refinement
+**8. Anti-patterns** — techniques from competitors to explicitly NOT adopt, with reasoning.
 
-### Anti-Patterns to Avoid
+**STOP.** Wait for user approval before modifying anything.
 
-Techniques from competitors we should explicitly NOT adopt, with reasoning.
+## Implementation (After Approval)
 
-## Phase 4: Present Report
-
-Present the full analysis:
-
-1. **Executive summary** (2-3 sentences): Overall assessment — ahead, behind, or on par? Over-engineered, under-engineered, or right-sized?
-2. **Agent-execution quality assessment**: The checks table with findings
-3. **Gap analysis table**: Consolidated findings including what to cut
-4. **Recommended removals**: Concrete sections to delete, with rationale
-5. **Recommended additions**: Highest-impact improvements with concrete text
-6. **Net effect**: Will the skill get longer, shorter, or stay the same? Aim for shorter-or-same.
-7. **Unique strengths to preserve**
-8. **Anti-patterns**
-
-**Stop here.** Wait for the user to decide which improvements to implement.
-
-## Phase 5: Implement (if approved)
-
-When rewriting skill instructions, apply these principles:
+When rewriting, apply:
 
 !~/.claude/skills/prompt/SKILL.md
 
-If the user approves specific changes:
-
-1. Read the current skill file again (it may have changed).
-2. **Apply removals first.** Delete or simplify before adding — this prevents the skill from growing.
-3. Apply additions using the Edit tool.
-4. Convert plain file path references to `!path/to/file.md` inline injection where appropriate.
-5. Verify the skill doesn't contradict itself after edits.
-6. Report the **net line count change**. A negative number is a good sign.
-
-## Constraints
-
-- Wait for user approval before modifying any skill — Phase 4 is a hard stop.
-- Preserve the skill's core philosophy. Recommend changes that align with it.
-- Keep recommendations tool-agnostic — techniques must work across AI coding environments.
-- Be honest about weaknesses and equally honest about strengths.
-- Treat removals as first-class recommendations. Cutting bloat is as valuable as adding a technique.
-- Focus on techniques and approaches, not prompt wording style.
+**Apply removals before additions** — this prevents the skill from growing. Models default to additive changes; force yourself to subtract first. Convert plain file paths to `!path/to/file.md` inline injection where appropriate. Report net line count change — a negative number is a good sign.

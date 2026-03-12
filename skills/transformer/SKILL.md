@@ -33,6 +33,7 @@ Before changing anything, classify what you're looking at:
 - **Motivate constraints.** Explain *why* so the model applies the principle in novel situations.
 - **Trust in context.** Don't restate what project-level config already specifies.
 - **Resist over-specification.** Each added instruction competes for attention. Keep only what wouldn't be obvious without the skill.
+- **Calibrate for the executing model.** Modern reasoning models are more responsive to system prompts than their predecessors — phantom constraints don't just waste attention, they cause overtriggering. Strip more aggressively. When adding calibration, use positive directives that describe the desired behavior ("use direct tool calls for simple lookups") rather than negative labels ("don't over-engineer") — negative framing primes the behavior it describes.
 
 ## Process
 

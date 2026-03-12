@@ -1,5 +1,5 @@
 ---
-name: review
+name: pr-review
 description: Review a PR/MR or local diff for correctness, security, and quality. Use when reviewing code changes before merge.
 argument-hint: [PR number, branch name, or local path]
 ---
