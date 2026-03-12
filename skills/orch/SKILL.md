@@ -33,12 +33,12 @@ If unsure, start with the medium path. You can always spawn an analyzer for a tr
 
 6. **Quality** — After all implementers complete, spawn quality teammates:
    - Spawn a `/qual` teammate to run multi-lens quality analysis on all changed files
-   - Spawn a `/lint` teammate to run all quality gates (format, lint, typecheck, tests, build)
+   - Spawn a `/qg` teammate to run all quality gates (format, lint, typecheck, tests, build)
    - Wait for both to complete
 
 7. **Fix** — If quality teammates find issues:
    - Critical/High issues: spawn fix teammates to resolve them
-   - Re-run `/lint` after fixes
+   - Re-run `/qg` after fixes
    - Repeat until clean or ask user if blocked
 
 8. **Report** — Output what was accomplished:
@@ -55,7 +55,7 @@ If unsure, start with the medium path. You can always spawn an analyzer for a tr
 | Check | Status | Issues |
 |-------|--------|--------|
 | /qual | PASS/FAIL | N critical, N high |
-| /lint | PASS/FAIL | details |
+| /qg | PASS/FAIL | details |
 
 ### Issues / Deferred
 <if any>
@@ -69,7 +69,7 @@ If unsure, start with the medium path. You can always spawn an analyzer for a tr
 - **Parallel by default** — Analyzers run in parallel. Implementers run in parallel (after all analyzers complete).
 - **No artificial teammate cap** — Scale work units to the task.
 - **Wait for completion** — Do not proceed to next phase until current phase teammates finish.
-- **Quality is mandatory** — Never report done without /qual and /lint passing.
+- **Quality is mandatory** — Never report done without /qual and /qg passing.
 
 ## Team Lifecycle
 

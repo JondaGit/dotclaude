@@ -48,15 +48,28 @@ Write these down. They become seeds for Phase 1 — each explorer receives one o
 
 ### Phase 1: Diverge
 
+#### Explorer Methods
+
+| Explorer | Agent file | Reasoning style |
+|----------|-----------|-----------------|
+| Forward Build-Up | `forward-build-up.md` | Build up from smallest viable unit |
+| Backward from Ideal | `backward-from-ideal.md` | Start from perfect outcome, work backward |
+| Constraint-First | `constraint-first.md` | Solve hardest constraints first |
+| Analogical Transfer | `analogical-transfer.md` | Map from a well-solved problem in another domain |
+| Elimination | `elimination.md` | Remove everything unnecessary |
+| Adversarial | `adversarial.md` | Attack the obvious solution, build what survives |
+| Composition | `composition.md` | Compose existing proven primitives |
+| Temporal | `temporal.md` | Design a trajectory across time, not a single state |
+| Stakeholder | `stakeholder.md` | Design for conflicting stakeholder needs simultaneously |
+
+Minimum set for any problem: Forward Build-Up, Backward from Ideal, Constraint-First, plus one other method relevant to the problem. Select from the table based on problem relevance.
+
 Spawn explorer agents in parallel, each with:
-- A clean context — only the problem statement, their assigned reasoning method, and relevant reframings. No agent sees another's work.
-- A different reasoning method from !methods.md
+- A clean context — only the problem statement, their assigned reasoning method from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, and relevant reframings. No agent sees another's work.
 - A unique provocation that no other explorer receives — a random constraint, forced analogy, or "what if" (e.g., "What if the primary user were blind?", "How would a hospital solve this?"). These break the homogenization that makes LLM outputs converge even across independent contexts.
 - The anti-priming guard: "The orchestrator's reframings are starting points, not constraints. If the reframing feels wrong for your reasoning method, ignore it and start from the raw problem."
 
 Each agent explores freely and produces their approach with narrative trade-offs: what it enables, what it sacrifices, what makes it fundamentally different from the obvious solution.
-
-How many explorers: see Scaling above. Select reasoning methods from !methods.md based on problem relevance.
 
 For codebase-aware problems: give each explorer the same codebase context but different reasoning methods. The codebase is shared input; the reasoning method creates diversity.
 

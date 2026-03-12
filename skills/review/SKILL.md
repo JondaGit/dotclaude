@@ -7,44 +7,35 @@ argument-hint: [PR number, branch name, or local path]
 target = $ARGUMENTS
 
 If target is not provided, review the PR/MR of the current branch.
-If target is a local path or branch name (not a PR/MR number), skip platform detection and use `git diff` directly.
+If target is a local path or branch name (not a PR/MR number), use `git diff` directly.
 
-## Fetching the Diff
+## What Makes a Good Review
 
-Use the platform's CLI to fetch the PR/MR diff, description, and CI status.
+Read the full files for each changed file, not just the hunks — the diff shows what changed but hides what breaks. Trace callers and callees when the blast radius isn't obvious.
 
-## Gathering Context
+Skip style and formatting — linters handle that. Focus on things that require human judgment: logic, architecture, security, and context-dependent concerns.
 
-The diff alone shows what changed, not what could break.
+### What to Watch For
 
-1. Read full files for each changed file — understand the surrounding code, not just the hunks
-2. Read the PR description and any linked issues for intent and acceptance criteria
-3. For complex changes, trace one level of callers/callees to assess blast radius
-4. Check CI status — note pass/fail state
+Beyond correctness, these dimensions catch real bugs that are easy to miss in diffs:
 
-## Scaling
+**Security** — Don't audit the whole codebase, but watch the diff for: string concatenation in database queries (injection), user input flowing to command execution or file paths, hardcoded secrets/API keys/tokens, missing authorization on new endpoints, removed or weakened input validation. Trace data from source to sink — if user-controlled data reaches a dangerous function without sanitization, that's CRITICAL.
 
-- **Small PR** (<5 files, <200 lines): Review inline, skip formality. Focus on correctness and security.
-- **Medium PR** (5-20 files): Full review with structured output below.
-- **Large PR** (20+ files or 1000+ lines): Flag the size as a finding. Prioritize security-sensitive files, core business logic, and public API changes. Cap findings at ~10 most impactful. Note which files were reviewed in depth vs. skimmed.
+**Breaking changes** — When public interfaces change, check downstream impact: modified function signatures, removed/renamed exports, changed response shapes or status codes, new required fields, schema migrations without backward compatibility. The diff won't show the callers that break — you need to look.
 
-## Review Focus
+**Performance** — Flag patterns that degrade at scale: database queries inside loops (N+1), O(n²) algorithms in hot paths, unbounded allocations or missing pagination, resource leaks (unclosed connections/handles), blocking operations in async contexts.
 
-Skip style and formatting issues that linters catch. Focus on logic, architecture, and context-dependent concerns.
+**Dependencies** — When lockfiles or manifests change: new dependencies deserve scrutiny for license compatibility, maintenance status, and known CVEs. OWASP ranks supply chain failures as a top-3 risk. Major version bumps may carry breaking API changes.
 
-1. **Scope** — Is the PR focused on one concern? Any files that don't belong?
-2. **Correctness** — Does the logic match the stated intent? Edge cases? Error paths?
-3. **Security** — Secrets? Injection risks (SQL/XSS/command)? Auth gaps? Validate at boundaries.
-4. **Tests** — New behavior tested? Edge cases covered? No skipped tests without justification?
-5. **Over-Engineering** — LLM-generated code is prone to: unnecessary abstractions, patterns for hypothetical flexibility, helper functions for one-time operations. Flag these specifically.
+**Over-engineering** — LLM-generated code has a specific failure mode: unnecessary abstractions, helper functions for one-time operations, patterns added for hypothetical flexibility. Flag these explicitly — they're common and costly.
 
 ## Output
 
 ### Findings
 
-Every CRITICAL and IMPORTANT finding includes *why it matters* and a *concrete fix suggestion* — a finding without a fix is only half-useful.
+Every CRITICAL and IMPORTANT finding includes *why it matters* and a *concrete fix suggestion*.
 
-Number findings sequentially for easy reference in discussion.
+Number findings sequentially for easy reference.
 
 ```
 1. [CRITICAL] file:line — Title
@@ -70,6 +61,8 @@ Number findings sequentially for easy reference in discussion.
 | Scope | clean / needs split |
 | Correctness | clean / N issues |
 | Security | clean / N issues |
+| Breaking changes | none / N risks |
+| Performance | clean / N issues |
 | Tests | adequate / gaps noted |
 
 ### Verdict
@@ -80,12 +73,12 @@ Number findings sequentially for easy reference in discussion.
 
 ## Feedback Style
 
-Frame findings constructively — the goal is to help the author, not gatekeep.
+Frame findings constructively — help the author, don't gatekeep.
 
-- Ask questions when possible: "What happens if this list is empty?" over "Handle the empty list case"
-- Explain *why* each finding matters — state the impact, not just the rule violation
+- Ask questions over directives: "What happens if this list is empty?" > "Handle the empty list case"
+- Explain *why* each finding matters — state the impact, not just the rule
 - Suggest concrete fixes
 
-## Submitting Review
+## Submitting
 
 Only submit a review to the platform if the user explicitly asks — default is local report only.
