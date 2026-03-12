@@ -2,9 +2,11 @@
 
 agent skills for agentic coding tools. extremely opinionated. updated (almost) daily.
 
+> **heads up:** this is a global `~/.claude` configuration repo — skills, hooks, and settings that apply across all projects. project-specific instructions (`CLAUDE.md`, `TOOLS.md`, skills) live in individual repositories.
+
 ### build
 
-Start here. `plan` decomposes the problem, `code` implements it solo, `orch` scales to parallel agents when the task is too large for one.
+start here. `plan` decomposes the problem, `code` implements it solo, `orch` scales to parallel agents when the task is too large for one.
 
 | skill | |
 |-------|-|
@@ -14,11 +16,11 @@ Start here. `plan` decomposes the problem, `code` implements it solo, `orch` sca
 
 ### quality
 
-Before you ship. Review what you built, refactor what's messy, distill what's bloated.
+before you ship. review what you built, refactor what's messy, distill what's bloated.
 
 | skill | |
 |-------|-|
-| `review` | code review — correctness, security, quality |
+| `pr-review` | code review — correctness, security, quality |
 | `qual` | multi-lens analysis with specialist agents |
 | `refactor` | architectural refactoring with parallel agents |
 | `distill` | maximize LOC reduction |
@@ -26,7 +28,7 @@ Before you ship. Review what you built, refactor what's messy, distill what's bl
 
 ### ship
 
-Git workflow from branch to PR to merge.
+git workflow from branch to PR to merge.
 
 | skill | |
 |-------|-|
@@ -38,7 +40,7 @@ Git workflow from branch to PR to merge.
 
 ### improve
 
-Level up your setup. Find community skills, benchmark your own, let `intern` analyze your sessions and auto-improve.
+level up your setup. find community skills, benchmark your own, let `intern` analyze your sessions and auto-improve.
 
 | skill | |
 |-------|-|
@@ -50,7 +52,7 @@ Level up your setup. Find community skills, benchmark your own, let `intern` ana
 
 ### domain
 
-Specialized tools for specific problem spaces.
+specialized tools for specific problem spaces.
 
 | skill | |
 |-------|-|
@@ -66,14 +68,14 @@ Specialized tools for specific problem spaces.
 
 ## configuration
 
-Skills work out of the box, but some features require `settings.json` entries:
+skills work out of the box, but some features require `settings.json` entries:
 
 | setting | why |
 |---------|-----|
 | `env.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` | required for skills that spawn agent teams (`orch`, `qual`, `refactor`, `intern`, `design`) |
 | `permissions.additionalDirectories: ["~/.claude/skills"]` | lets teammates read skill files — needed if you symlink skills into `~/.claude/skills/` |
 
-Hook scripts ship in `hooks/` but must be wired in `settings.json` under the `hooks` key to take effect — see [Claude Code docs on hooks](https://docs.anthropic.com/en/docs/claude-code/hooks).
+hook scripts ship in `hooks/` but must be wired in `settings.json` under the `hooks` key to take effect — see [Claude Code docs on hooks](https://docs.anthropic.com/en/docs/claude-code/hooks).
 
 ## install
 
@@ -83,21 +85,21 @@ git clone git@github.com:JHostalek/dotclaude.git ~/dotclaude
 ln -s ~/dotclaude/skills/* ~/.claude/skills/
 
 # or just copy what you need
-cp -r skills/review ~/.claude/skills/
+cp -r skills/pr-review ~/.claude/skills/
 ```
 
 ## third-party skills
 
-Some skills in this repo were created by other authors and are included under their original licenses — **not** CC0.
+some skills in this repo were created by other authors and are included under their original licenses — **not** CC0.
 
-| Skill | Author | License | Source |
+| skill | author | license | source |
 |-------|--------|---------|--------|
 | `skill-creator` | [Anthropic](https://github.com/anthropics) | [Apache 2.0](skills/skill-creator/LICENSE.txt) | [anthropics/skills](https://github.com/anthropics/skills) |
 | `seo-geo` | [ReScienceLab](https://github.com/ReScienceLab) | [MIT](skills/seo-geo/.claude-plugin/plugin.json) | [ReScienceLab/opc-skills](https://github.com/ReScienceLab/opc-skills) |
 
 ## license
 
-[CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) — public domain. Excludes [third-party skills](#third-party-skills) listed above.
+[CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) — public domain. excludes [third-party skills](#third-party-skills) listed above.
 
 ---
 
@@ -110,7 +112,7 @@ Some skills in this repo were created by other authors and are included under th
 
 ### What Problem Does This Solve?
 
-Claude Code ships with general-purpose intelligence but no opinionated workflows. dotclaude adds battle-tested skills for the full development lifecycle: planning (`plan`), implementation (`code`), code review (`review`, `qual`), refactoring (`refactor`, `distill`), git workflow (`commit`, `pr`, `worktree`, `worktree-clean`), team orchestration (`orch`), and SEO/GEO optimization (`seo-geo`). Each skill encodes specific methodologies — the review skill checks for correctness, security, and quality; the design skill spawns independent agents with different reasoning methods to prevent convergence bias; the intern skill analyzes past sessions to detect recurring patterns and auto-improve your configuration; the seo-geo skill applies Princeton GEO research methods and DataForSEO API integration to optimize for both traditional and AI search engines.
+Claude Code ships with general-purpose intelligence but no opinionated workflows. dotclaude adds battle-tested skills for the full development lifecycle: planning (`plan`), implementation (`code`), code review (`pr-review`, `qual`), refactoring (`refactor`, `distill`), git workflow (`commit`, `pr`, `worktree`, `worktree-clean`), team orchestration (`orch`), and SEO/GEO optimization (`seo-geo`). Each skill encodes specific methodologies — the pr-review skill checks for correctness, security, and quality; the design skill spawns independent agents with different reasoning methods to prevent convergence bias; the intern skill analyzes past sessions to detect recurring patterns and auto-improve your configuration; the seo-geo skill applies Princeton GEO research methods and DataForSEO API integration to optimize for both traditional and AI search engines.
 
 ### How dotclaude Compares to Alternatives
 
@@ -130,7 +132,7 @@ Claude Code ships with general-purpose intelligence but no opinionated workflows
 
 **Workflow skills** automate the development loop: `plan` creates decomposed implementation plans with verification criteria; `code` executes plans with incremental testing and legacy cleanup; `commit` enforces conventional commits with branch guards; `pr` creates pull requests with conventional formatting; `worktree` and `worktree-clean` manage git worktree lifecycle for isolated feature development; `orch` orchestrates multi-agent teams for parallel implementation; `timesheet` generates monthly work summaries from git history.
 
-**Quality skills** catch issues before they reach production: `review` performs multi-dimensional code review (correctness, security, quality); `qual` spawns specialist agent teammates that analyze code from different angles then consolidate findings; `refactor` runs comprehensive architectural analysis with parallel agent teams per module; `distill` maximizes line-of-code reduction while maintaining readability; `ux` evaluates user interfaces across 13 dimensions mapped to Nielsen's heuristics.
+**Quality skills** catch issues before they reach production: `pr-review` performs multi-dimensional code review (correctness, security, quality); `qual` spawns specialist agent teammates that analyze code from different angles then consolidate findings; `refactor` runs comprehensive architectural analysis with parallel agent teams per module; `distill` maximizes line-of-code reduction while maintaining readability; `ux` evaluates user interfaces across 13 dimensions mapped to Nielsen's heuristics.
 
 **Meta skills** improve your Claude Code setup itself: `skill-creator` creates, modifies, benchmarks, and evaluates skills with variance analysis; `improve-skill` compares your skills against the open ecosystem and competing AI coding tools; `find-skills` discovers installable skills from community registries; `intern` analyzes recent Claude Code sessions to detect recurring patterns and automatically write skill and rule improvements; `prompt` designs production-grade LLM prompts through interactive collaboration.
 
