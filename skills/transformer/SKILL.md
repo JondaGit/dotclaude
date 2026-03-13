@@ -1,39 +1,57 @@
 ---
 name: transformer
-description: Rewrite a skill from rigid procedure into principles-based education for reasoning models. Use when a skill over-constrains the model with step-by-step instructions instead of teaching judgment.
+description: Rewrite a skill so a reasoning model performs it better — strip scaffolding, preserve domain knowledge, add calibration. Use when a skill over-constrains the model or lacks concrete guidance.
 argument-hint: <path to skill.md or skill name>
 ---
 
 input = $ARGUMENTS
 
-Rewrite the target skill so it teaches a reasoning model *how to think* about the task, rather than *what steps to execute*.
+Rewrite the target skill so a reasoning model executes it with better judgment, not just different formatting.
 
-## The Problem
+## What This Is
 
-Skills written as numbered procedures cause reasoning models to follow the checklist mechanically and stop noticing things *not on the checklist*. Procedural scaffolding doesn't help reasoning models — it *interferes* with their internal chain-of-thought.
+Skills fail reasoning models in two opposite ways:
 
-**But not all structure is scaffolding.** The goal is to strip what the model can reason about on its own, while preserving what it genuinely can't know or infer.
+1. **Over-proceduralized** — numbered checklists the model follows mechanically, stopping it from noticing anything not on the list. Scaffolding competes with the model's own chain-of-thought.
+2. **Under-specified** — abstract principles without concrete anchoring. The model understands the philosophy but is slow and uncertain about what to actually *do*.
 
-## The Core Distinction
+The target is the middle: **motivated structure**. Steps exist where the model genuinely needs them. Each step carries its *why*. Everything the model can reason through on its own is stripped.
 
-Before changing anything, classify what you're looking at:
+## Classify Before Cutting
 
-**Strip: Reasoning scaffolding** — steps telling the model how to think about problems it can already reason through. Phantom constraints it already follows. Redundant restatements of project-level conventions (CLAUDE.md, TOOLS.md already cover these).
+Read the entire skill. Before changing anything, classify each element:
 
-**Keep: Everything the model genuinely can't know or infer:**
-- **Orchestration** — multi-agent coordination, approval gates, conditional phases. A model can't infer it should stop and wait for user approval, or that wave 2 depends on wave 1's output size. This is *protocol*, not scaffolding.
-- **Domain knowledge** — tiers, taxonomies, heuristic catalogs. These look like checklists but encode non-obvious expertise. Keep and compress if verbose, but don't flatten into prose.
-- **Calibration data** — statements countering pretraining bias ("you'll want to skip this", "this tier accounts for 50% of savings"). Highest-value lines in a skill. Never strip.
-- **Templates, formats, and coordination contracts** — output structure, teammate prompts, report formats, tool restrictions per phase. The model wouldn't produce these without being told.
+**Strip** — reasoning scaffolding the model handles natively:
+- Steps telling it how to think about problems it already reasons through
+- Phantom constraints it already follows (e.g., "write clean code")
+- Redundant restatements of project-level conventions (CLAUDE.md covers these)
 
-**The litmus test:** Would removing this cause the model to do the wrong thing, skip something important, or coordinate incorrectly? If yes, it's protocol or domain knowledge — not procedure.
+**Keep and compress** — things the model genuinely can't know:
+- **Orchestration** — approval gates, multi-agent coordination, conditional phases. Protocol, not scaffolding.
+- **Domain knowledge** — tiers, taxonomies, heuristic catalogs. These look like checklists but encode non-obvious expertise. Compress if verbose; don't flatten into prose.
+- **Calibration** — statements countering pretraining bias ("you'll want to skip this step — don't", "this tier accounts for 50% of savings"). Highest-value lines in any skill. Never strip.
+- **Templates & contracts** — output formats, teammate prompts, tool restrictions. The model wouldn't produce these without being told.
+- **Failure modes** — specific ways the model will go wrong on *this* task. "Watch out for X" is worth more than paragraphs of positive instruction. Anti-examples showing wrong output are especially high-value.
+
+**The litmus test:** Would removing this cause the model to do the wrong thing, skip something, or coordinate incorrectly? Keep it. Would a reasoning model arrive here on its own? Strip it.
+
+## What Good Looks Like
+
+A well-transformed skill has these qualities:
+
+- **Layered** — intent and scope up top, then principles, then specifics. Not a flat rule list.
+- **Motivated** — every constraint carries a sentence of *why*, so the model adapts in novel situations instead of pattern-matching.
+- **Concrete** — at least one input/output example or anti-example showing the skill's core judgment call. Abstract principles without anchoring produce uncertain behavior.
+- **Failure-aware** — names the 2-3 ways the model is most likely to go wrong on this specific task. Generic warnings ("be careful") do nothing; specific ones ("python-pptx silently drops formatting when...") change behavior.
+- **Appropriately trusting** — constrains where the model's defaults are genuinely wrong; gives freedom where its instincts are solid. Over-control produces worse results than under-control.
 
 ## Rewriting Principles
 
 - **Motivate constraints.** Explain *why* so the model applies the principle in novel situations.
 - **Trust in context.** Don't restate what project-level config already specifies.
-- **Resist over-specification.** Each added instruction competes for attention. Keep only what wouldn't be obvious without the skill.
-- **Calibrate for the executing model.** Modern reasoning models are more responsive to system prompts than their predecessors — phantom constraints don't just waste attention, they cause overtriggering. Strip more aggressively. When adding calibration, use positive directives that describe the desired behavior ("use direct tool calls for simple lookups") rather than negative labels ("don't over-engineer") — negative framing primes the behavior it describes.
+- **Resist over-specification.** Each instruction competes for attention. Keep only what wouldn't be obvious without the skill.
+- **Positive directives over negative framing.** "Use direct tool calls for simple lookups" beats "don't over-engineer" — negative framing primes the behavior it describes.
+- **Add failure modes, not just principles.** Where will the model go wrong? Name it. A concrete anti-pattern is the highest-density instruction you can write.
 
 ## Process
 
