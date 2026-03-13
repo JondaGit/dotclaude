@@ -35,6 +35,7 @@ git workflow from branch to PR to merge.
 | `commit` | conventional commits + push |
 | `pr` | PR from worktree branch |
 | `worktree` | git worktree for isolated dev |
+| `rebase` | rebase branch onto target, resolve conflicts |
 | `worktree-clean` | remove completed worktree + branch |
 | `timesheet` | monthly work summary from git |
 
@@ -58,6 +59,15 @@ specialized tools for specific problem spaces.
 |-------|-|
 | `design` | divergent exploration with independent reasoning agents |
 | `seo-geo` | SEO + generative engine optimization |
+
+### experimental — [Pencil](https://www.pencil.dev/)
+
+design-to-code workflow for [Pencil](https://www.pencil.dev/) `.pen` files. requires the Pencil MCP server — see [AI integration docs](https://docs.pencil.dev/getting-started/ai-integration) for setup.
+
+| skill | |
+|-------|-|
+| `pen-design` | design UIs in `.pen` files — design thinking + visual systems |
+| `pen-code` | convert between `.pen` designs and React/Tailwind code |
 
 ### hooks
 
@@ -123,7 +133,8 @@ Claude Code ships with general-purpose intelligence but no opinionated workflows
 | Multi-agent design exploration | Yes (design skill) | No | No |
 | Skill meta-tooling | Yes (skill-creator, improve-skill, find-skills) | No | No |
 | SEO/GEO optimization | Yes (seo-geo: free audit + 9 DataForSEO scripts) | No | No |
-| Git workflow automation | Yes (commit, pr, worktree, worktree-clean) | No | Partial |
+| Git workflow automation | Yes (commit, pr, rebase, worktree, worktree-clean) | No | Partial |
+| Design-to-code (Pencil) | Yes (pen-design, pen-code) | No | No |
 | Self-improving configuration | Yes (intern skill) | No | No |
 | Agent Skills standard compliant | Yes | Yes | Varies |
 | Cross-tool compatible | Yes (Codex, Cursor, Copilot) | Claude Code only | Claude Code only |
@@ -137,6 +148,8 @@ Claude Code ships with general-purpose intelligence but no opinionated workflows
 **Meta skills** improve your Claude Code setup itself: `skill-creator` creates, modifies, benchmarks, and evaluates skills with variance analysis; `improve-skill` compares your skills against the open ecosystem and competing AI coding tools; `find-skills` discovers installable skills from community registries; `intern` analyzes recent Claude Code sessions to detect recurring patterns and automatically write skill and rule improvements; `prompt` designs production-grade LLM prompts through interactive collaboration.
 
 **Domain skills** solve specific problems: `design` runs divergent design exploration by spawning independent agents with clean contexts and different reasoning methods (morphological analysis, TRIZ, constraint relaxation, biomimicry) to prevent convergence bias; `seo-geo` handles SEO and Generative Engine Optimization for both traditional search engines (Google, Bing) and AI search engines (ChatGPT, Perplexity, Gemini, Google AI Overview, Microsoft Copilot, Claude) — includes a free technical SEO audit script, 9 DataForSEO-powered Python scripts (keyword research, related keywords, autocomplete ideas, SERP analysis, backlinks, domain overview, competitor gap analysis), 6 reference guides (Princeton GEO research, platform-specific ranking algorithms, JSON-LD schema templates, SEO audit checklist, tools and APIs), and a real-world optimization case study.
+
+**Experimental — Pencil integration:** `pen-design` creates production-quality UI designs in Pencil `.pen` files with design thinking and visual systems methodology; `pen-code` converts between `.pen` designs and React/Tailwind code (export from design or sync changes back). These skills require the [Pencil](https://www.pencil.dev/) desktop app and its MCP server — see [AI integration docs](https://docs.pencil.dev/getting-started/ai-integration) for setup.
 
 ### Installation and Usage
 
@@ -161,6 +174,6 @@ The `seo-geo` skill optimizes websites for both traditional search engines (Goog
 
 ### Tags
 
-`claude-code-skills` `agent-skills` `claude-code-plugins` `claude-code-configuration` `ai-coding-tools` `ai-code-review` `ai-refactoring` `code-quality` `git-workflow-automation` `conventional-commits` `pull-request-automation` `git-worktree` `multi-agent-orchestration` `agent-teams` `design-exploration` `seo-optimization` `generative-engine-optimization` `geo-optimization` `ai-search-optimization` `chatgpt-optimization` `perplexity-seo` `google-ai-overview` `dataforseo` `keyword-research` `serp-analysis` `backlink-analysis` `schema-markup` `json-ld` `skill-creator` `claude-code-setup` `dotfiles` `anthropic` `claude-sonnet` `claude-opus` `codex-cli` `cursor-rules` `copilot-skills` `agent-skills-standard` `prompt-engineering` `ux-evaluation` `code-distillation` `developer-tools` `ai-developer-tools` `typescript` `python` `open-source`
+`claude-code-skills` `agent-skills` `claude-code-plugins` `claude-code-configuration` `ai-coding-tools` `ai-code-review` `ai-refactoring` `code-quality` `git-workflow-automation` `conventional-commits` `pull-request-automation` `git-worktree` `multi-agent-orchestration` `agent-teams` `design-exploration` `seo-optimization` `generative-engine-optimization` `geo-optimization` `ai-search-optimization` `chatgpt-optimization` `perplexity-seo` `google-ai-overview` `dataforseo` `keyword-research` `serp-analysis` `backlink-analysis` `schema-markup` `json-ld` `skill-creator` `claude-code-setup` `dotfiles` `anthropic` `claude-sonnet` `claude-opus` `codex-cli` `cursor-rules` `copilot-skills` `agent-skills-standard` `prompt-engineering` `ux-evaluation` `code-distillation` `pencil-dev` `design-to-code` `pen-files` `mcp-server` `developer-tools` `ai-developer-tools` `typescript` `python` `open-source`
 
 </details>
