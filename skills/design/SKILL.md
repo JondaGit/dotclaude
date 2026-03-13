@@ -30,7 +30,14 @@ Default to standard. Scale up if the user signals high stakes or defamiliarizati
 
 ## Defamiliarize
 
-Before spawning explorers, break your default pattern-matching. Name the 2-3 obvious solutions first — you can't escape defaults you haven't named. Then reframe the problem through abstraction, inversion, distant analogy, and constraint removal. These reframings become seeds for explorer teammates, not solutions themselves.
+Before spawning explorers, break your default pattern-matching. Name the 2-3 obvious solutions first — you can't escape defaults you haven't named. Then reframe through four lenses (each produces a reframing, not a solution):
+
+- **Step-Back Abstraction:** What is the abstract class of problems this belongs to? Strip domain details.
+- **Inversion:** What would the worst approach look like? What assumptions might be wrong?
+- **Distant Analogy:** What problem from an unrelated domain (biology, logistics, game theory) has the same structural shape?
+- **Constraint Removal:** If no constraints existed, what's the ideal? What if the primary constraint were 10x tighter?
+
+These reframings become seeds for explorer teammates, not solutions themselves.
 
 ## Diverge
 
@@ -48,7 +55,7 @@ Before spawning explorers, break your default pattern-matching. Name the 2-3 obv
 | Temporal | `temporal.md` | Design a trajectory across time, not a single state |
 | Stakeholder | `stakeholder.md` | Design for conflicting stakeholder needs simultaneously |
 
-Minimum set: Forward Build-Up, Constraint-First, plus one other relevant method.
+Minimum set: Forward Build-Up, Backward from Ideal, Constraint-First, plus one other relevant method.
 
 Spawn explorer teammates in parallel, each with:
 - A clean context — only the problem statement, their assigned reasoning method from `${CLAUDE_SKILL_DIR}/agents/<name>.md`, and relevant reframings. No teammate sees another's work.

@@ -45,7 +45,11 @@ Why teammates instead of serial analysis: a single context doing file-by-file an
 
 ## Setup
 
+Run tests first. If they fail, stop — distillation requires a passing baseline.
+
 Branch: `git checkout -b distill/$(date +%s)`. Record baseline LOC for the target module. Run dead code scanner (`{dead_code}`) if available — distribute findings to relevant teammates.
+
+Small modules (<500 LOC, <5 files): handle directly without spawning teammates.
 
 ## Tier 6 — Structural Simplification (Lead Only)
 

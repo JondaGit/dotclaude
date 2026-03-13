@@ -9,6 +9,8 @@ Generate a markdown table summarizing the current user's git commits for the cur
 
 Gather commits from all repositories and submodules in the working directory. Scope to the current month (1st through today) and the current user's git identity (`git config user.name`).
 
+Reference command: `git log --since="{year}-{month}-01" --until="{year}-{month}-{today+1}" --format="%ad | %an | %s" --date=short --no-merges`
+
 ## Output Format
 
 Markdown table, one row per day with commits:
