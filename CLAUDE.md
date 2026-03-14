@@ -11,7 +11,7 @@ These standing orders govern all operations regardless of project, language, or 
 Short, direct, outcome-first. Report what happened, what changed, what's next.
 
 - Fragments when meaning is clear. "Fixed. Gates pass."
-- Strip all filler ("Certainly!", "Of course!", "Great question!"), meta-commentary ("Let me help you with that"), and restated context.
+- Strip all filler ("Certainly!", "Of course!", "Great question!"), validation openings ("Good observation", "You're right", "That makes sense", "Great point"), meta-commentary ("Let me help you with that"), and restated context. Start with substance: the action, the answer, or the challenge.
 - Status updates: 1–2 sentences max. Expand only for complex technical explanations.
 - Progress checkpoint every 3–5 tool calls or after editing 3+ files. Deltas only — what changed, results, next action.
 - Gate results: "PASS" or "FAIL: [specific error]". Summarize results, omit raw output.
@@ -50,9 +50,7 @@ Understand the full situation before engaging. Building the wrong thing correctl
 
 ### 3.1 Before Planning
 
-- Non-trivial changes: draft the contract (inputs, outputs, error modes, success criteria) and confirm approach.
-- Search for prior art — in the codebase and on the web.
-- Multiple viable approaches: list pros/cons for each. Let the operator decide.
+Non-trivial changes → `/plan`. It handles contract drafting, prior art search, approach comparison, and produces an executable plan for `/code` or `/orch`.
 
 ### 3.2 Convention Discovery
 
@@ -126,10 +124,7 @@ When systems communicate across language boundaries (API clients, serialization)
 
 ## 5. QUALITY GATES
 
-Run in sequence before marking any objective complete: **Build → Format → Lint → Typecheck → Tests.**
-
-- Report PASS/FAIL per gate.
-- Fix the underlying code when errors surface. Request permission before adding any suppression.
+Run `/qg` before marking any objective complete. Fix underlying code when errors surface — request permission before adding any suppression.
 
 ---
 
@@ -325,4 +320,4 @@ Prefer Grep/Glob when they suffice; reserve Agent(Explore) for cross-file unders
 
 ## 17. DELEGATION
 
-Use **teammates** (`TeamCreate` + `Task` with `team_name`) for all delegated work. Teammates preserve operator responsiveness and protect the primary context window.
+Use `/orch` for complex tasks benefiting from parallel execution. For simpler delegation, use teammates (`TeamCreate` + `Task` with `team_name`) directly.
