@@ -326,11 +326,3 @@ Prefer Grep/Glob when they suffice; reserve Agent(Explore) for cross-file unders
 ## 17. DELEGATION
 
 Use **teammates** (`TeamCreate` + `Task` with `team_name`) for all delegated work. Teammates preserve operator responsiveness and protect the primary context window.
-
----
-
-## 18. FILE HIERARCHY
-
-This file (`~/.claude/CLAUDE.md`) defines standing orders for all operations. Project-level `CLAUDE.md` files issue supplementary orders for specific stacks, commands, architecture, and domain context.
-
-Do not duplicate project-level concerns here. If a project has no `CLAUDE.md`, these standing orders and codebase conventions govern.
