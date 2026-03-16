@@ -25,6 +25,7 @@ before you ship. review what you built, refactor what's messy, distill what's bl
 | `refactor` | architectural refactoring with parallel agents |
 | `distill` | maximize LOC reduction |
 | `ux` | UI evaluation across Nielsen's heuristics |
+| `qg` | quality gates — format, lint, typecheck, tests, build |
 
 ### ship
 
@@ -50,6 +51,7 @@ level up your setup. find community skills, benchmark your own, let `intern` ana
 | `skill-creator` | create, modify, benchmark, eval skills |
 | `intern` | analyze sessions, detect patterns, auto-improve |
 | `prompt` | design production-grade LLM prompts |
+| `transformer` | rewrite skills for reasoning model performance |
 
 ### domain
 
@@ -143,9 +145,9 @@ Claude Code ships with general-purpose intelligence but no opinionated workflows
 
 **Workflow skills** automate the development loop: `plan` creates decomposed implementation plans with verification criteria; `code` executes plans with incremental testing and legacy cleanup; `commit` enforces conventional commits with branch guards; `pr` creates pull requests with conventional formatting; `worktree` and `worktree-clean` manage git worktree lifecycle for isolated feature development; `orch` orchestrates multi-agent teams for parallel implementation; `timesheet` generates monthly work summaries from git history.
 
-**Quality skills** catch issues before they reach production: `pr-review` performs multi-dimensional code review (correctness, security, quality); `qual` spawns specialist agent teammates that analyze code from different angles then consolidate findings; `refactor` runs comprehensive architectural analysis with parallel agent teams per module; `distill` maximizes line-of-code reduction while maintaining readability; `ux` evaluates user interfaces across 13 dimensions mapped to Nielsen's heuristics.
+**Quality skills** catch issues before they reach production: `pr-review` performs multi-dimensional code review (correctness, security, quality); `qual` spawns specialist agent teammates that analyze code from different angles then consolidate findings; `refactor` runs comprehensive architectural analysis with parallel agent teams per module; `distill` maximizes line-of-code reduction while maintaining readability; `ux` evaluates user interfaces across 13 dimensions mapped to Nielsen's heuristics; `qg` runs all quality gates (format, lint, typecheck, tests, build) and reports PASS/FAIL per gate.
 
-**Meta skills** improve your Claude Code setup itself: `skill-creator` creates, modifies, benchmarks, and evaluates skills with variance analysis; `improve-skill` compares your skills against the open ecosystem and competing AI coding tools; `find-skills` discovers installable skills from community registries; `intern` analyzes recent Claude Code sessions to detect recurring patterns and automatically write skill and rule improvements; `prompt` designs production-grade LLM prompts through interactive collaboration.
+**Meta skills** improve your Claude Code setup itself: `skill-creator` creates, modifies, benchmarks, and evaluates skills with variance analysis; `improve-skill` compares your skills against the open ecosystem and competing AI coding tools; `find-skills` discovers installable skills from community registries; `intern` analyzes recent Claude Code sessions to detect recurring patterns and automatically write skill and rule improvements; `prompt` designs production-grade LLM prompts through interactive collaboration; `transformer` rewrites skills so reasoning models perform them better — strips scaffolding, preserves domain knowledge, adds calibration.
 
 **Domain skills** solve specific problems: `design` runs divergent design exploration by spawning independent agents with clean contexts and different reasoning methods (morphological analysis, TRIZ, constraint relaxation, biomimicry) to prevent convergence bias; `seo-geo` handles SEO and Generative Engine Optimization for both traditional search engines (Google, Bing) and AI search engines (ChatGPT, Perplexity, Gemini, Google AI Overview, Microsoft Copilot, Claude) — includes a free technical SEO audit script, 9 DataForSEO-powered Python scripts (keyword research, related keywords, autocomplete ideas, SERP analysis, backlinks, domain overview, competitor gap analysis), 6 reference guides (Princeton GEO research, platform-specific ranking algorithms, JSON-LD schema templates, SEO audit checklist, tools and APIs), and a real-world optimization case study.
 
