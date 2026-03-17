@@ -20,7 +20,15 @@ Show the derived name before proceeding.
 - `repo_root` = `git rev-parse --show-toplevel`
 - Ensure `.claude/worktrees/` exists and is in `.gitignore`
 
-Create: `git worktree add -b {branch} {directory} HEAD`
+## Base Branch
+
+Always branch from the latest remote default branch, not from `HEAD`:
+
+1. Detect default branch: `git symbolic-ref refs/remotes/origin/HEAD | sed 's|refs/remotes/origin/||'` (fallback: try `main`, then `master`)
+2. Fetch latest: `git fetch origin {default_branch}`
+3. Use `origin/{default_branch}` as the start point
+
+Create: `git worktree add -b {branch} {directory} origin/{default_branch}`
 If branch already exists: `git worktree add {directory} {branch}` (no `-b`).
 
 After creation, symlink gitignored files so the worktree is immediately functional without reinstalling:
