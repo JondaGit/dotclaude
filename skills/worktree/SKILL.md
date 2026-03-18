@@ -38,16 +38,28 @@ bash ~/.claude/skills/worktree/scripts/symlink-gitignored.sh {repo_root} {direct
 
 ## Submodules
 
-`git worktree add` on a parent doesn't create worktrees for submodules — they'd still point at the original branch. Before creating anything, determine scope:
+`git worktree add` on a parent repo does NOT automatically set up submodules. The submodule directories will be empty. But each worktree gets its own independent submodule git dir at `.git/worktrees/{name}/modules/{submodule}`, so submodules can be on different branches without conflicting with the original checkout.
 
-- **Single submodule only** — worktree in that submodule
-- **Parent + submodule(s)** — worktrees in both parent AND each affected submodule
+**Setup after creating the parent worktree:**
+
+1. Initialize and checkout submodules inside the worktree:
+   ```
+   cd {directory}
+   git submodule update --init
+   ```
+2. If the submodule needs a specific branch (not just the commit pinned by the parent):
+   ```
+   git -C {directory}/{submodule} checkout {branch}
+   ```
+3. Symlink gitignored files for each submodule:
+   ```
+   bash ~/.claude/skills/worktree/scripts/symlink-gitignored.sh {repo_root}/{submodule} {directory}/{submodule}
+   ```
+
+**Scope determination** — before creating anything:
+- **Single submodule only** — worktree in that submodule alone
+- **Parent + submodule(s)** — parent worktree + submodule init inside it
 - **Ambiguous** — ask
-
-Run the symlink script for each submodule too:
-```
-bash ~/.claude/skills/worktree/scripts/symlink-gitignored.sh {repo_root}/{submodule} {directory}/{submodule}
-```
 
 ## Output
 
