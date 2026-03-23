@@ -21,7 +21,7 @@ The parent repo stores submodule SHAs — merging the parent first may reference
 
 Merge a submodule only when it has its own feature branch. Submodules on detached HEAD at a pinned commit are dependencies — leave them alone.
 
-After parent merge completes, amend the merge commit to reference the updated submodule HEAD: `git add {submodule} && git commit --amend --no-edit`.
+After parent merge completes, amend the merge commit to reference the updated submodule HEAD: `git add {submodule} && git commit --amend -m "chore: merge {target} into {current-branch}"`.
 
 ## Conflict Resolution
 
@@ -54,6 +54,12 @@ Merge creates a single merge commit but does NOT execute the target's new migrat
 
 ## Merge Commit Message
 
-Use a clear merge commit message. If the default `Merge branch 'X' into Y` is sufficient, keep it. If conflicts were resolved or notable decisions made, add a brief summary to the merge commit body.
+Many projects enforce conventional commit format via pre-commit hooks. The default git merge message (`Merge branch 'X' into Y`) will be rejected by these hooks. Always use a conventional commit message for merge commits:
+
+```
+chore: merge {target} into {current-branch}
+```
+
+Pass the message explicitly: `git merge origin/{target} -m "chore: merge {target} into {current-branch}"`. For conflict resolutions that require a separate `git commit` after staging, use the same format. If conflicts were resolved or notable decisions made, add a brief summary to the commit body.
 
 **Report:** repos merged, commits integrated, conflicts resolved, migration reconciliation results, quality gate results.

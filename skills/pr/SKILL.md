@@ -26,6 +26,8 @@ Work spanning multiple repositories (parent + submodule, multiple services) need
 | `gh` | `--title` | `--body` | `gh pr create` |
 | `glab` | `--title` | `--description` | `glab mr create` |
 
+Always pass the remove-source-branch flag (`gh`: `--delete-branch`, `glab`: `--remove-source-branch`) so the source branch is cleaned up on merge.
+
 When in doubt, check `--help` before invoking — a failed MR create can leave orphaned remote state.
 
 ## PR Body
