@@ -1,6 +1,6 @@
 ---
 name: transformer
-description: Rewrite a skill so a reasoning model performs it better — strip scaffolding, preserve domain knowledge, add calibration. Use when a skill over-constrains the model or lacks concrete guidance.
+description: Use when rewriting a skill so a reasoning model follows it more reliably or with less prompt scaffolding.
 argument-hint: <path to skill.md or skill name>
 ---
 

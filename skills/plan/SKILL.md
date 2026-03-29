@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Create an executable implementation plan that another agent can follow without questions. Use when planning complex features, refactors, or multi-step changes.
+description: Use when a task is multi-step, ambiguous, or high-impact and you need an executable implementation plan before editing code.
 argument-hint: [task description]
 ---
 

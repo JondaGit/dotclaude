@@ -1,6 +1,6 @@
 ---
 name: find-skills
-description: Discover and install agent skills from the open ecosystem. Use when the user asks "how do I do X", "find a skill for X", or wants to extend agent capabilities.
+description: Use when the user asks how to do something, wants a skill for a task, or wants to discover and install new agent capabilities.
 argument-hint: [search query]
 ---
 

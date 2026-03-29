@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Commit and push changes following conventional commits. Use when ready to commit completed work.
+description: Use when the user asks to commit, create a git commit, checkpoint changes, save work to git, or write a commit message.
 ---
 
 ## Branch Safety

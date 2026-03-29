@@ -1,6 +1,6 @@
 ---
 name: rebase
-description: Rebase current branch onto a target branch, resolving conflicts and handling submodules. Use when the user says "rebase", "rebase on master", or wants to update their branch.
+description: Use when the user asks to rebase the current branch onto another branch or update branch history without merging.
 argument-hint: [target-branch] (defaults to master/main)
 ---
 input = $ARGUMENTS

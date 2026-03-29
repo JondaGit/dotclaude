@@ -1,6 +1,6 @@
 ---
 name: worktree
-description: Create a git worktree for isolated feature development. Use when starting work on a new feature branch.
+description: Use when starting new feature work that should happen in an isolated git worktree on its own branch.
 argument-hint: <task description or branch name>
 allowed-tools: Bash
 ---

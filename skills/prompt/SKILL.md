@@ -1,6 +1,6 @@
 ---
 name: prompt
-description: Design a production-grade LLM prompt through interactive collaboration. Use when the user wants to create, refine, or optimize a prompt for any model.
+description: Use when the user asks to create, refine, evaluate, or optimize an LLM prompt.
 ---
 
 task = $ARGUMENTS

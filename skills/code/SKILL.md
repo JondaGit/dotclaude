@@ -1,6 +1,6 @@
 ---
 name: code
-description: Implement a plan with incremental execution, quality gates, and 3-strike error recovery. Use when ready to code from an existing plan or task description.
+description: Use when implementing an approved task or plan in the current session and you are ready to make code changes.
 ---
 
 task = $ARGUMENTS

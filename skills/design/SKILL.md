@@ -1,6 +1,6 @@
 ---
 name: design
-description: Divergent design exploration that produces genuinely orthogonal solutions. Spawns independent teammates with clean contexts and different reasoning methods to prevent convergence bias. Domain-agnostic — works for architecture, UI, product, strategy, or any design problem.
+description: Use when the user needs design exploration, multiple distinct solution directions, or tradeoff-driven options before implementation.
 argument-hint: [design problem or goal]
 ---
 

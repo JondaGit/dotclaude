@@ -1,6 +1,6 @@
 ---
 name: timesheet
-description: Generate monthly work summary from git commits. Use for monthly reporting or time tracking.
+description: Use when the user needs a monthly work summary, time-tracking report, or commit-based activity recap.
 ---
 
 Generate a markdown table summarizing the current user's git commits for the current month.

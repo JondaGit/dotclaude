@@ -1,11 +1,6 @@
 ---
 name: pen-code
-description: |
-  Convert between Pencil (.pen) designs and code. Two modes:
-  - Export: Generate React/Tailwind code from .pen frames
-  - Sync: Diff .pen against existing code and apply changes
-
-  Use when: generating code from designs, syncing design changes to code, or aligning implementation with .pen files.
+description: Use when generating code from a Pencil (.pen) design, syncing code to a .pen file, or aligning an implementation with .pen changes.
 ---
 
 # Pencil <> Code

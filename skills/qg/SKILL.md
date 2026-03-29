@@ -1,6 +1,6 @@
 ---
 name: qg
-description: Run all quality gates (format, lint, typecheck, tests, build) and report PASS/FAIL per gate. Use after implementing changes to verify quality.
+description: Use after making changes to run the project's quality gates and report pass or fail for each relevant check.
 argument-hint: [path]
 ---
 

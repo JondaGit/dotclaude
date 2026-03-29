@@ -1,6 +1,6 @@
 ---
 name: pr
-description: Create a pull request from the current worktree branch. Commits uncommitted changes, pushes, and opens a PR with conventional formatting.
+description: Use when the user asks to create or update a pull request for the current branch.
 ---
 
 Prepare and open a PR/MR for the current branch — from "work is done" to "PR is open and reviewable."

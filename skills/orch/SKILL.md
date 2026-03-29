@@ -1,6 +1,6 @@
 ---
 name: orch
-description: Execute a complex task using an agent team. Creates a team lead that spawns teammates for parallel work units. Use for multi-file features, refactors, or any task benefiting from parallel implementation.
+description: Use when a task spans multiple files or workstreams and benefits from parallel implementation by an agent team.
 argument-hint: [task or plan reference]
 ---
 

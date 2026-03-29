@@ -1,6 +1,6 @@
 ---
 name: ux
-description: Evaluate UI from real user perspective — what frustrates, confuses, or blocks users? Applies 13 UX dimensions (mapped to Nielsen's heuristics). Use after implementing UI changes or when reviewing user-facing pages.
+description: Use when reviewing a user-facing page or flow for usability issues, confusion, friction, or missed UX principles.
 argument-hint: [page path or URL]
 ---
 
