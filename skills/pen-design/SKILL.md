@@ -1,6 +1,6 @@
 ---
 name: pen-design
-description: Design distinctive, production-quality UIs in Pencil (.pen files). Use when creating screens, editing designs, or doing visual QA in .pen files. Covers design thinking, visual systems, and the full design lifecycle.
+description: Use when creating, editing, or visually reviewing Pencil (.pen) screens, components, or flows.
 ---
 
 # UI Design in Pencil

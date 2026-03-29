@@ -1,6 +1,6 @@
 ---
 name: merge
-description: Merge a target branch into the current branch, resolving conflicts and handling submodules. Use when the user says "merge", "merge master", or wants to pull upstream changes without rebasing.
+description: Use when the user asks to merge another branch into the current branch, pull upstream changes without rebasing, or resolve merge conflicts.
 argument-hint: [target-branch] (defaults to master/main)
 ---
 input = $ARGUMENTS

@@ -1,6 +1,6 @@
 ---
 name: worktree-clean
-description: Remove a git worktree and its local branch. Use from the main repo, not from inside the worktree.
+description: Use when removing a git worktree and cleaning up its associated local branch from the main repository.
 argument-hint: [worktree-path]
 allowed-tools: Bash
 ---

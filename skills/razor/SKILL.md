@@ -1,9 +1,6 @@
 ---
 name: razor
-description: >-
-  Challenge whether code in a given folder earns its maintenance cost. Spawns adversarial
-  reviewers who question existence, flag over-engineering, and propose cheaper alternatives.
-  Occam's razor — cut what can't justify itself.
+description: Use when questioning whether code in a folder should exist, whether a solution is over-engineered, or where maintenance cost can be cut.
 argument-hint: <path>
 ---
 

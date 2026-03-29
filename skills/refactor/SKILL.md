@@ -1,6 +1,6 @@
 ---
 name: refactor
-description: Execute codebase refactoring with architectural analysis, quality dimensions, and parallel teammate teams. Use when you have dedicated time for deep codebase improvement.
+description: Use when the user asks for a substantial refactor, structural cleanup, or deep codebase improvement beyond a small localized change.
 argument-hint: "[path] [--dimensions typing,security,...] [--phase N]"
 ---
 

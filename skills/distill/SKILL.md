@@ -1,8 +1,6 @@
 ---
 name: distill
-description: >-
-  Maximize net LOC reduction while improving or maintaining readability.
-  Auto-applies everything except user-facing capability removal.
+description: Use when the goal is to reduce code size, remove unnecessary complexity, or simplify a module without removing user-facing behavior.
 ---
 
 target_module = $ARGUMENTS

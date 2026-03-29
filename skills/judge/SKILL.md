@@ -1,9 +1,6 @@
 ---
 name: judge
-description: >-
-  Spawn an independent expert review of work done in this conversation. Domain-agnostic —
-  works for code, design, architecture, config, prompts, anything. A constructive senior
-  peer who asks "would an expert in this domain do it the same way?"
+description: Use when the user wants an independent expert review of work done in this conversation before accepting or extending it.
 argument-hint: "[description of what to review, or omit for recent work]"
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: qual
-description: Multi-lens quality analysis with specialist teammates. Analyzes code from different angles, consolidates findings for user approval, then implements fixes.
+description: Use when you want a deeper multi-angle quality review before shipping, especially after substantial or risky changes.
 argument-hint: [path]
 ---
 

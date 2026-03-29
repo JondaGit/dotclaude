@@ -1,9 +1,6 @@
 ---
 name: improve-skill
-description: >
-  Critically assess an existing skill through competitive analysis and agent-execution quality review.
-  Uses a local system-prompts reference repo and the open skill ecosystem to identify gaps, strengths,
-  and concrete improvements. Use when the user says "improve skill X", "compare my skill", "what am I missing in skill X".
+description: Use when the user asks to improve, compare, audit, or identify gaps in an existing skill.
 allowed-tools: Read, Glob, Grep, Bash, Edit, Write, Task, WebFetch, WebSearch
 argument-hint: <skill-name>
 ---

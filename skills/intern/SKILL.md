@@ -1,11 +1,6 @@
 ---
 name: intern
-description: >
-  Analyze recent Claude Code sessions to find suboptimal vibe-coding flows and produce
-  a review report with lessons learned. Detects issues in both user prompting and agent
-  behavior — over-engineering, wasted turns, missed context, poor skill usage, repeated
-  friction. Even a single problematic conversation produces findings. Use when the user says
-  "reflect", "what did I repeat", "analyze my sessions", "improve skills", "intern observe".
+description: Use when the user asks to reflect on recent sessions, analyze repeated mistakes, or review prompting and agent patterns for improvement.
 allowed-tools: Read, Glob, Grep, Bash, Edit, Write, Task
 argument-hint: "[--days N]"
 ---
