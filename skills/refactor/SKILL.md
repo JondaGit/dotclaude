@@ -55,23 +55,6 @@ For implementer mode, also append the analyzer's findings report.
 | `security` | 3 — Cross-cutting | Needs stable code to audit boundaries. |
 | `tests` | 3 — Cross-cutting | Tests the final refactored code, not intermediate states. |
 
-### Project-Type Applicability
-
-Skip irrelevant specialists rather than forcing them.
-
-| Agent | CLI Tool | Library/SDK | Web App | API Service | Worker/Queue |
-|-------|---------|-------------|---------|-------------|-------------|
-| typing | Yes | Yes | Yes | Yes | Yes |
-| dead-code | Yes | Yes | Yes | Yes | Yes |
-| error-handling | Yes | Yes | Yes | Yes | Yes |
-| correctness | Yes | Yes | Yes | Yes | Yes |
-| structure | Yes | Yes | Yes | Yes | Yes |
-| duplication | Yes | Yes | Yes | Yes | Yes |
-| patterns | Yes | Yes | Yes | Yes | Yes |
-| security | Rarely | Rarely | Yes | Yes | Depends |
-| tests | Yes | Yes | Yes | Yes | Yes |
-| perf | Rarely | Rarely | Yes | Yes | Yes |
-
 ## Phases
 
 Phase order is strict — never start Phase N+1 before Phase N's checkpoint commit. Each phase builds on the prior phase's guarantees.
@@ -79,8 +62,6 @@ Phase order is strict — never start Phase N+1 before Phase N's checkpoint comm
 ### Phase 0: Safety Baseline (Lead Solo)
 
 Establish that the codebase is in a known-good state before anyone touches it. Run tests, verify the build, confirm a clean working tree. Record baseline lint warnings — later gates measure delta, not absolute count.
-
-Classify the project (CLI / library / web app / API service / worker) and use the applicability matrix to skip irrelevant specialists.
 
 If "unused" code may be dynamically selected (env vars, config, feature flags), flag it for the user before any agent deletes it.
 
