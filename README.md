@@ -1,6 +1,6 @@
 # dotclaude
 
-agent skills for agentic coding tools. extremely opinionated. updated (almost) daily.
+skills for agentic coding tools. extremely opinionated. updated (almost) daily.
 
 > **heads up:** this is a global `~/.claude` configuration repo — skills, hooks, and settings that apply across all projects. project-specific instructions (`CLAUDE.md`, `TOOLS.md`, skills) live in individual repositories.
 
