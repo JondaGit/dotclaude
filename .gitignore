@@ -31,6 +31,9 @@
 !skills/
 !skills/**
 
+# --- Sync script ---
+!sync-skills.sh
+
 # --- Exclude loose files in skills root and machine-specific skills ---
 skills/*.*
 skills/ccs-delegation/

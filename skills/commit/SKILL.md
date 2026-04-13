@@ -13,7 +13,7 @@ Committing to the wrong branch is the most common costly mistake — it bypasses
 
 ## Commit Format
 
-!`cat ~/.claude/skills/conventional-commits.md`
+!`cat ~/.claude/skills/conventional-commits/SKILL.md`
 
 ### Message Quality
 
